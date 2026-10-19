@@ -224,7 +224,7 @@ export default function Overview() {
 
         <div className="ovside">
           <div className="kpi">
-            <div className="kl">점으로 찍힌 계열사</div>
+            <div className="kl">응답한 계열사 수</div>
             <div className="kv">{staff.length}</div>
           </div>
           <div className="kpi">
@@ -236,7 +236,7 @@ export default function Overview() {
             <div className="kv">{staff.length ? f1(avg(staff, "ca")) : "-"}</div>
           </div>
           <div className="ovlegend">
-            <span className="lg-staff">담당자 (계열사당 최신 1건)</span>
+            <span className="lg-staff">담당자 응답 (계열사마다 가장 최근 1건)</span>
             {showLeaders && <span className="lg-leader">팀장 ({leaders.length}건)</span>}
           </div>
           <div className="ovquads">
