@@ -303,10 +303,13 @@ h2 { font-weight: 700; font-size: 22px; margin: 52px 0 6px; text-wrap: balance; 
 .ovcells { font-size: 11px; fill: var(--sub); }
 .ovcount { font-size: 40px; font-weight: 700; fill: var(--accent2); opacity: .45; }
 .ovcountl { font-size: 11px; font-weight: 700; fill: var(--accent2); opacity: .7; }
-.ovmode { display: inline-flex; gap: 10px; align-items: center; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; }
+.ovfoot { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-top: 10px; font-size: 11.5px; color: var(--sub); }
+.ovfoot label { display: inline-flex; gap: 5px; align-items: center; cursor: pointer; }
+.ovfoot input { accent-color: var(--accent); width: 13px; height: 13px; }
+.ovmode { display: inline-flex; gap: 8px; align-items: center; padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; }
 .ovmode .ovmodel { font-size: 11.5px; font-weight: 700; color: var(--sub); }
 .ovmode label.off { color: var(--sub); opacity: .6; }
-.ovmode i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 3px; vertical-align: -1px; }
+.ovmode i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 3px; vertical-align: -1px; }
 .ovmode i.st { background: var(--accent); } .ovmode i.ld { background: var(--leader); }
 .ovcount .ld, .kpi .kv.ld { fill: var(--leader); color: var(--leader); }
 .ovcount .sep { opacity: .5; }
@@ -322,6 +325,7 @@ h2 { font-weight: 700; font-size: 22px; margin: 52px 0 6px; text-wrap: balance; 
 /* 발표용 전체 화면 */
 .overview.board { position: fixed; inset: 0; z-index: 100; border: none; border-radius: 0; padding: 24px 36px; overflow: auto; background: var(--bg); display: flex; flex-direction: column; }
 .overview.board .ovhead { flex: none; }
+.overview.board .ovfoot { flex: none; font-size: 12px; opacity: .8; }
 .overview.board .ovtitle { font-size: 30px; }
 .overview.board .ovsub { font-size: 15px; }
 .overview.board .ovbody { flex: 1 1 auto; min-height: 0; align-items: stretch; flex-wrap: nowrap; }

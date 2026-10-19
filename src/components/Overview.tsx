@@ -138,24 +138,6 @@ export default function Overview() {
           </div>
         </div>
         <div className="ovctl noprint">
-          <label>
-            <input type="checkbox" checked={showNames} onChange={(e) => setShowNames(e.target.checked)} /> 계열사 이름 표시
-          </label>
-          <span className="ovmode" role="radiogroup" aria-label="표시할 응답">
-            <span className="ovmodel">표시</span>
-            <label>
-              <input type="radio" name="ovmode" checked={mode === "staff"} onChange={() => setMode("staff")} /> <i className="st" />
-              담당자
-            </label>
-            <label className={leaders.length === 0 ? "off" : ""}>
-              <input type="radio" name="ovmode" checked={mode === "leader"} disabled={leaders.length === 0} onChange={() => setMode("leader")} />{" "}
-              <i className="ld" />
-              팀장{leaders.length === 0 ? " (아직 없음)" : ""}
-            </label>
-            <label className={leaders.length === 0 ? "off" : ""}>
-              <input type="radio" name="ovmode" checked={mode === "both"} disabled={leaders.length === 0} onChange={() => setMode("both")} /> 함께
-            </label>
-          </span>
           {board ? (
             <button type="button" className="btn small ghost" onClick={exitBoard}>
               전체 화면 닫기 (Esc)
@@ -278,6 +260,27 @@ export default function Overview() {
             {showLeaders && <div className="kv ld">{leaders.length ? f1(avg(leaders, "ca")) : "-"}{showStaff && <small> 팀장</small>}</div>}
           </div>
         </div>
+      </div>
+
+      <div className="ovfoot noprint">
+        <label>
+          <input type="checkbox" checked={showNames} onChange={(e) => setShowNames(e.target.checked)} /> 계열사 이름 표시
+        </label>
+        <span className="ovmode" role="radiogroup" aria-label="표시할 응답">
+          <span className="ovmodel">표시</span>
+          <label>
+            <input type="radio" name="ovmode" checked={mode === "staff"} onChange={() => setMode("staff")} /> <i className="st" />
+            담당자
+          </label>
+          <label className={leaders.length === 0 ? "off" : ""}>
+            <input type="radio" name="ovmode" checked={mode === "leader"} disabled={leaders.length === 0} onChange={() => setMode("leader")} />{" "}
+            <i className="ld" />
+            팀장{leaders.length === 0 ? " (아직 없음)" : ""}
+          </label>
+          <label className={leaders.length === 0 ? "off" : ""}>
+            <input type="radio" name="ovmode" checked={mode === "both"} disabled={leaders.length === 0} onChange={() => setMode("both")} /> 함께
+          </label>
+        </span>
       </div>
     </div>
   );
