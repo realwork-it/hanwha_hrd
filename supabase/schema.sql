@@ -1,4 +1,4 @@
--- 조직개발 준비도 진단 응답 테이블.
+-- 조직변화 준비도 체크 응답 테이블.
 -- Supabase 대시보드의 SQL Editor에 붙여 넣어 한 번 실행한다.
 
 create table if not exists public.responses (

@@ -7,7 +7,7 @@ import { login, logout } from "./actions";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "응답 현황 | 조직개발 준비도 진단",
+  title: "응답 현황 | 조직변화 준비도 체크",
   robots: { index: false, follow: false },
 };
 
@@ -148,7 +148,7 @@ function Shell({ children }: { children: React.ReactNode }) {
     <>
       <div className="band compact">
         <div className="inner">
-          <p className="eyebrow">REALWORK | 조직개발 준비도 진단 | 진행자용</p>
+          <p className="eyebrow">REALWORK | 조직변화 준비도 체크 | 진행자용</p>
           <h1>응답 현황</h1>
         </div>
       </div>

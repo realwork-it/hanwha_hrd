@@ -10,7 +10,7 @@ import SiteFooter from "@/components/SiteFooter";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "결과지 | 조직개발 준비도 진단",
+  title: "결과지 | 조직변화 준비도 체크",
   robots: { index: false, follow: false },
 };
 
@@ -48,8 +48,8 @@ export default async function ResultPage({ params, searchParams }: PageProps<"/r
     <>
       <div className="band compact">
         <div className="inner">
-          <p className="eyebrow">REALWORK | 조직개발 준비도 진단 | {row.role === "leader" ? "팀장용 결과지" : "담당자용 결과지"}</p>
-          <h1>조직개발 준비도 진단 결과지</h1>
+          <p className="eyebrow">REALWORK | 조직변화 준비도 체크 | {row.role === "leader" ? "팀장용 결과지" : "담당자용 결과지"}</p>
+          <h1>조직변화 준비도 체크 결과지</h1>
           <p className="lede" style={{ fontSize: 14 }}>
             {row.company}
             {row.name ? `, ${row.name}` : ""} | {fmt.format(new Date(row.created_at))} 제출

@@ -10,7 +10,7 @@ const plex = IBM_Plex_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: "조직개발 준비도 진단",
+  title: "조직변화 준비도 체크",
   description: "15문항에 답하면 지금 우리 조직에서 가능한 변화 유형과 접근 전략, 첫걸음까지 결과지로 받습니다.",
   robots: { index: false, follow: false },
 };

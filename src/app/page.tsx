@@ -6,8 +6,8 @@ export default function StaffPage() {
     <>
       <div className="band">
         <div className="inner">
-          <p className="eyebrow">REALWORK | 조직개발 준비도 진단 | 조직문화 담당자용</p>
-          <h1>조직개발 준비도 진단</h1>
+          <p className="eyebrow">REALWORK | 조직변화 준비도 체크 | 조직문화 담당자용</p>
+          <h1>조직변화 준비도 체크</h1>
           <p className="lede">
             같은 과제도 조직의 준비 상태에 따라 결과가 다릅니다. 15문항에 답하면{" "}
             <b>지금 우리 조직에서 가능한 변화 유형과 접근 전략, 첫걸음</b>까지 결과지로 받습니다.
