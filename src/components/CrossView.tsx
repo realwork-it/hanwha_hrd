@@ -1,6 +1,6 @@
 // 2차 교차 보기. 팀장 응답과 같은 계열사 담당자 응답을 한 화면에 놓는다.
 import Link from "next/link";
-import { CONFIG, QUADRANT_CELLS, type QuadrantKey } from "@/lib/config";
+import { CONFIG, QUADRANT_CELLS, quadrantStrat, type QuadrantKey } from "@/lib/config";
 import { f1, pos, type Scored } from "@/lib/score";
 import { Badge } from "./ResultSheet";
 
@@ -198,7 +198,7 @@ function Column({ who, title, s }: { who: "leader" | "staff"; title: string; s: 
     <div className="col">
       <div className={`ch ${who}`}>{title}</div>
       <div className="cn">{qd.name}</div>
-      <div className="cs">{qd.strat}</div>
+      <div className="cs">{quadrantStrat(s.quadrant, s.size)}</div>
       <div className="cs" style={{ marginTop: 8, fontWeight: 700 }}>
         낮은 영역에 대한 제언
       </div>

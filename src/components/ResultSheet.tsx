@@ -1,5 +1,5 @@
 // 결과지 7개 블록. 프로토타입 v0.9 결과지의 구조와 문구를 그대로 옮겼다.
-import { CONFIG, QUADRANT_CELLS, SIZES, type QuadrantKey } from "@/lib/config";
+import { CONFIG, QUADRANT_CELLS, SIZES, quadrantStrat, type QuadrantKey } from "@/lib/config";
 import { f1, pos, type Scored } from "@/lib/score";
 
 interface Props {
@@ -165,7 +165,7 @@ export default function ResultSheet({ scored }: Props) {
           <div className="approach">
             <div className="an">{qd.name}</div>
             <div className="ad">{qd.diag}</div>
-            <div className="as">{qd.strat}</div>
+            <div className="as">{quadrantStrat(quadrant, size)}</div>
             <div className="fs">추천 활동</div>
             <ol>
               {qd.steps.map((s) => (
@@ -216,7 +216,10 @@ export default function ResultSheet({ scored }: Props) {
           <h3>
             <span className="bn">5</span>낮은 영역에 대한 제언
           </h3>
-          <p className="bs">기준에 못 미친 영역 가운데 가장 낮은 것부터 최대 세 개까지 보여 줍니다.</p>
+          <p className="bs">
+            점수가 {CONFIG.RX_CUT} 이하인 영역을 낮은 것부터 최대 세 개까지 보여 줍니다.
+            {flagged.length > 0 && flagged.length < CONFIG.RX_MAX && ` 이번 응답에서는 ${flagged.length}개 영역이 해당합니다.`}
+          </p>
           <div className="rxlist">
             {flagged.length > 0 ? (
               flagged.map((r) => (
@@ -229,7 +232,7 @@ export default function ResultSheet({ scored }: Props) {
                 </div>
               ))
             ) : (
-              <div className="rxnone">기준에 크게 못 미친 영역이 없습니다. 접근 전략의 추천 활동으로 바로 넘어가세요.</div>
+              <div className="rxnone">{CONFIG.RX_CUT} 이하인 영역이 없습니다. 접근 전략의 추천 활동으로 바로 넘어가세요.</div>
             )}
           </div>
         </div>
