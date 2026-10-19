@@ -269,11 +269,18 @@ footer { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 14px;
 
 @media (max-width: 640px) {
   .brow, .brow2 { grid-template-columns: 104px 1fr 40px; }
-  .marr { display: none; }
+  /* 모바일에서는 모델 다이어그램을 세로로 쌓고 화살표를 아래 방향으로 보여 준다 */
+  .model { flex-direction: column; gap: 6px; }
+  .mcol { flex-basis: auto; }
+  .marr { display: block; text-align: center; font-size: 0; line-height: 1; padding: 2px 0; }
+  .marr::after { content: "↓"; font-size: 20px; }
   .coordwrap { flex-direction: column; }
+  /* 세로축 라벨을 좌표 위에 가로로 놓아 좌표가 화면 폭을 다 쓰게 한다 */
+  .coordbox { flex-direction: column; flex-basis: auto; }
+  .axlab.v { writing-mode: horizontal-tb; text-orientation: initial; margin: 0 0 6px; text-align: left; align-self: flex-start; }
+  .coord { min-width: 0; }
   .twocol { grid-template-columns: 1fr; }
   .size3 { flex-direction: column; }
-  .axlab.v { text-orientation: mixed; letter-spacing: 0; }
   .rbody { padding: 6px 14px 20px; }
   .axis { padding: 16px 14px; }
 }

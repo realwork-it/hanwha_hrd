@@ -163,13 +163,13 @@ export default function ResultSheet({ scored }: Props) {
 
         <div className="rblock">
           <h3>
-            <span className="bn">3</span>접근 전략과 첫걸음
+            <span className="bn">3</span>접근 전략과 추천 활동
           </h3>
           <div className="approach">
             <div className="an">{qd.name}</div>
             <div className="ad">{qd.diag}</div>
             <div className="as">{qd.strat}</div>
-            <div className="fs">이번 분기의 첫걸음</div>
+            <div className="fs">추천 활동</div>
             <ol>
               {qd.steps.map((s) => (
                 <li key={s}>{s}</li>
