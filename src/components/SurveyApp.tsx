@@ -57,6 +57,8 @@ export default function SurveyApp({ role }: Props) {
   const [hasPending, setHasPending] = useState(false);
   const [showMissing, setShowMissing] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const companyTextRef = useRef<HTMLInputElement>(null);
 
   // 임시 저장분 복원. 제출 실패로 보관된 응답이 있으면 그것을 우선한다.
   useEffect(() => {
@@ -69,6 +71,8 @@ export default function SurveyApp({ role }: Props) {
       setCompanyText(draft.companyText ?? "");
       setName(draft.name ?? "");
       setAnswers(draft.answers ?? {});
+      // 비제어 입력란에는 값을 직접 넣는다. 직접 입력란은 복원된 상태로 마운트되므로 defaultValue가 처리한다.
+      if (nameRef.current) nameRef.current.value = draft.name ?? "";
     }
     setHasPending(!!pending);
     setHydrated(true);
@@ -138,7 +142,14 @@ export default function SurveyApp({ role }: Props) {
           <select
             id="company"
             value={companySel}
-            onChange={(e) => setCompanySel(e.target.value)}
+            onChange={(e) => {
+              const v = e.target.value;
+              setCompanySel(v);
+              // 직접 입력을 고르면 포커스를 입력란으로 옮긴다. 드롭다운에 포커스가 남아 타이핑이 먹히지 않는 문제를 막는다.
+              if (v === OTHER_COMPANY) {
+                requestAnimationFrame(() => companyTextRef.current?.focus());
+              }
+            }}
             required
             aria-required="true"
           >
@@ -151,15 +162,24 @@ export default function SurveyApp({ role }: Props) {
             <option value={OTHER_COMPANY}>목록에 없음 (직접 입력)</option>
           </select>
           {companySel === OTHER_COMPANY && (
-            <input
-              type="text"
-              id="companyText"
-              placeholder="계열사 이름을 적어 주세요"
-              value={companyText}
-              onChange={(e) => setCompanyText(e.target.value)}
-              maxLength={60}
-              autoComplete="organization"
-            />
+            <div className="other" key="other">
+              <label htmlFor="companyText">
+                계열사 이름 직접 입력<span className="req" aria-hidden="true">*</span>
+              </label>
+              {/* 한글 입력기와의 충돌을 피하려고 비제어 입력으로 두고 값만 상태에 복사한다 */}
+              <input
+                type="text"
+                id="companyText"
+                ref={companyTextRef}
+                placeholder="예: 한화○○"
+                defaultValue={companyText}
+                onChange={(e) => setCompanyText(e.target.value)}
+                maxLength={60}
+                autoComplete="organization"
+                inputMode="text"
+              />
+              <span className="hint">아래 칸에 회사 이름을 적어 주세요. 3일차에 팀장도 같은 이름을 적어야 비교가 됩니다.</span>
+            </div>
           )}
           {role === "leader" && (
             <span className="hint">같은 계열사 담당자의 결과와 비교하려면 담당자와 같은 이름의 계열사를 골라야 합니다.</span>
@@ -179,7 +199,8 @@ export default function SurveyApp({ role }: Props) {
           <input
             type="text"
             id="name"
-            value={name}
+            ref={nameRef}
+            defaultValue=""
             onChange={(e) => setName(e.target.value)}
             maxLength={60}
             placeholder={role === "leader" ? "예: 홍길동 또는 생산1팀" : "비워 두어도 됩니다"}

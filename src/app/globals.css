@@ -76,6 +76,8 @@ h2 { font-weight: 700; font-size: 22px; margin: 52px 0 6px; text-wrap: balance; 
 }
 .field select:focus-visible, .field input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .req { color: var(--red); font-weight: 700; margin-left: 3px; }
+.field .other { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; padding: 12px; border: 1px dashed var(--accent); border-radius: 8px; background: var(--pale); }
+.field .other label { font-size: 13.5px; }
 
 /* 진행률 */
 .progress { position: sticky; top: 0; z-index: 10; background: var(--bg); padding: 10px 0 8px; border-bottom: 1px solid var(--line); }
