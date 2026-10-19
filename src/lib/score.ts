@@ -36,10 +36,15 @@ export const mean = (ids: readonly string[], answers: Answers): number =>
 /** 소수 둘째 자리 문자열 (프로토타입 f1) */
 export const f1 = (n: number): string => (Math.round(n * 100) / 100).toFixed(2);
 
-/** 좌표 점 위치. 셀 경계(50%)가 기준선과 일치하도록 구간별로 계산한다. */
+/**
+ * 좌표 점 위치. 셀 경계(50%)가 기준선과 일치하도록 구간별로 계산한다.
+ * 값이 기준선과 정확히 같으면(예: 8문항 평균 22/8 = 2.75) 판정은 "기준선 위"이므로,
+ * 점이 경계선에 걸쳐 보이지 않도록 위쪽 칸 안으로 조금 밀어 그린다.
+ */
 export const pos = (v: number): number => {
   const CUT = CONFIG.CUT;
-  const p = v <= CUT ? ((v - 1) / (CUT - 1)) * 50 : 50 + ((v - CUT) / (4 - CUT)) * 50;
+  const onCut = Math.abs(v - CUT) < 1e-9;
+  const p = onCut ? 50 + 4 : v < CUT ? ((v - 1) / (CUT - 1)) * 50 : 50 + ((v - CUT) / (4 - CUT)) * 50;
   return Math.min(97, Math.max(3, p));
 };
 
