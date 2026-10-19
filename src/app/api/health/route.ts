@@ -28,6 +28,8 @@ export async function GET() {
             : "unknown",
     },
     adminPassword: !!process.env.ADMIN_PASSWORD,
+    // 배포된 커밋. 어떤 버전이 떠 있는지 확인하는 용도
+    commit: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? null,
   };
 
   if (url && key) {
