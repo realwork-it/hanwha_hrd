@@ -178,7 +178,7 @@ export default function SurveyApp({ role }: Props) {
                 autoComplete="organization"
                 inputMode="text"
               />
-              <span className="hint">아래 칸에 회사 이름을 적어 주세요. 3일차에 팀장도 같은 이름을 적어야 비교가 됩니다.</span>
+              <span className="hint">이 칸에 회사 이름을 적어 주세요. 3일차에 팀장도 같은 이름을 적어야 비교가 됩니다.</span>
             </div>
           )}
           {role === "leader" && (
