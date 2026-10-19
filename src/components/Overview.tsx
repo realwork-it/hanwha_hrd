@@ -8,7 +8,8 @@ import type { OverviewData, OverviewPoint } from "@/lib/overview-types";
 const REFRESH_MS = 30_000;
 const W = 640;
 const H = 560;
-const PAD = { l: 48, r: 16, t: 16, b: 44 };
+// 위 여백을 0으로 두어 좌표의 윗선이 옆 칸 상자의 윗선과 나란히 놓이게 한다
+const PAD = { l: 48, r: 2, t: 1, b: 44 };
 const PW = W - PAD.l - PAD.r;
 const PH = H - PAD.t - PAD.b;
 
@@ -170,24 +171,30 @@ export default function Overview() {
                 <text x={PAD.l + (q.x * PW) / 2 + 12} y={PAD.t + (q.y * PH) / 2 + 44} className="ovcells">
                   {QUADRANT_CELLS[q.key].sub}
                 </text>
-                <text
-                  x={PAD.l + (q.x * PW) / 2 + PW / 2 - 14}
-                  y={PAD.t + (q.y * PH) / 2 + PH / 2 - 26}
-                  className="ovcount"
-                  textAnchor="end"
-                >
-                  {showStaff && <tspan className="st">{staffCounts[q.key]}</tspan>}
-                  {showStaff && showLeaders && <tspan className="sep"> / </tspan>}
-                  {showLeaders && <tspan className="ld">{leaderCounts[q.key]}</tspan>}
-                </text>
-                <text
-                  x={PAD.l + (q.x * PW) / 2 + PW / 2 - 14}
-                  y={PAD.t + (q.y * PH) / 2 + PH / 2 - 10}
-                  className="ovcountl"
-                  textAnchor="end"
-                >
-                  {mode === "staff" ? "계열사" : mode === "leader" ? "팀장" : "담당자 / 팀장"}
-                </text>
+                {/* 사분면에 든 수. 담당자는 "3개 계열사", 팀장은 "팀장 1명"으로 읽히게 적는다 */}
+                {showStaff && (
+                  <text
+                    x={PAD.l + (q.x * PW) / 2 + PW / 2 - 14}
+                    y={PAD.t + (q.y * PH) / 2 + PH / 2 - (showLeaders ? 34 : 14)}
+                    className="ovcount st"
+                    textAnchor="end"
+                  >
+                    {staffCounts[q.key]}
+                    <tspan className="ovcountl">개 계열사</tspan>
+                  </text>
+                )}
+                {showLeaders && (
+                  <text
+                    x={PAD.l + (q.x * PW) / 2 + PW / 2 - 14}
+                    y={PAD.t + (q.y * PH) / 2 + PH / 2 - 14}
+                    className="ovcount ld"
+                    textAnchor="end"
+                  >
+                    <tspan className="ovcountl">팀장 </tspan>
+                    {leaderCounts[q.key]}
+                    <tspan className="ovcountl">명</tspan>
+                  </text>
+                )}
               </g>
             ))}
             <line x1={cutX} y1={PAD.t} x2={cutX} y2={PAD.t + PH} className="ovcut" />
@@ -206,7 +213,7 @@ export default function Overview() {
             </text>
             <text x={PAD.l - 6} y={PAD.t + PH + 4} textAnchor="end" className="ovtick">1</text>
             <text x={PAD.l - 6} y={cutY + 4} textAnchor="end" className="ovtick">{CONFIG.CUT}</text>
-            <text x={PAD.l - 6} y={PAD.t + 8} textAnchor="end" className="ovtick">4</text>
+            <text x={PAD.l - 6} y={PAD.t + 12} textAnchor="end" className="ovtick">4</text>
             <text x={PAD.l} y={PAD.t + PH + 16} textAnchor="middle" className="ovtick">1</text>
             <text x={cutX} y={PAD.t + PH + 16} textAnchor="middle" className="ovtick">{CONFIG.CUT}</text>
             <text x={PAD.l + PW} y={PAD.t + PH + 16} textAnchor="middle" className="ovtick">4</text>
