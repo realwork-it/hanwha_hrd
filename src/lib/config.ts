@@ -333,7 +333,7 @@ const quadrants: Record<QuadrantKey, Quadrant> = {
 
 export const CONFIG = {
   CUT: 2.75,
-  BORDER: 0.25,
+  BORDER: 0.15,
   SIZE_HI: 3.25,
   RX_CUT: 2.5,
   RX_MAX: 3,
