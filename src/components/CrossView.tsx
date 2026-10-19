@@ -67,7 +67,7 @@ export default function CrossView({ leader, staff, staffLabel, staffOptions, cur
             <div className="coordbox">
               <div className="axlab v">
                 <span className="lab">
-                  <span className="arr-v">↑ </span>동력, 변화를 원하는 힘<span className="arr-h"> →</span>
+                  <span className="arr-v">↑ </span>변화를 원하는 힘<span className="arr-h"> →</span>
                 </span>
               </div>
               <div className="coord">
@@ -87,7 +87,7 @@ export default function CrossView({ leader, staff, staffLabel, staffOptions, cur
                     팀장
                   </div>
                 </div>
-                <div className="axlab">역량, 변화를 해낼 힘 →</div>
+                <div className="axlab">변화를 해낼 힘 →</div>
               </div>
             </div>
             <div className="coordside">
