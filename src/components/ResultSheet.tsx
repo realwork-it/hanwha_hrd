@@ -313,7 +313,7 @@ export default function ResultSheet({ scored }: Props) {
             <span className="bn">6</span>이 결과를 쓰는 법
           </h3>
           <div className="honest">
-            <b>이 결과는 측정이 아니라 설계의 출발점입니다.</b>
+            <b>이 결과지는 변화를 설계하는 출발점입니다.</b>
             응답한 한 사람이 본 조직의 모습을 구조화한 것이라 조직의 실제와 다를
             수 있습니다. 위 여섯 영역 가운데 가장 자신 없는 영역 하나를 골라
             짧은 설문이나 리더 면담으로 확인하는 것까지가 이 진단의 완성입니다.
