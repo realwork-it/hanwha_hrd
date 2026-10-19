@@ -293,7 +293,7 @@ const quadrants: Record<QuadrantKey, Quadrant> = {
   hihi: {
     name: "큰 변화를 설계할 수 있는 상태",
     diag: "변화를 원하는 힘과 해낼 힘이 모두 기준선 위에 있습니다. 전사 단위 과제를 설계할 수 있는 드문 시기입니다.",
-    strat: "이행형에서 전환형까지 열려 있습니다. 다만 준비도가 높을 때가 과욕의 위험도 가장 큰 때입니다. 과제는 두 개까지만 잡고 처음부터 측정 계획을 함께 설계하세요.",
+    strat: "개편형에서 재설계형까지 열려 있습니다. 다만 준비도가 높을 때가 과욕의 위험도 가장 큰 때입니다. 과제는 두 개까지만 잡고 처음부터 측정 계획을 함께 설계하세요.",
     steps: [
       "변화과제 설계서를 쓰고 시작 시점의 상태를 측정해 둡니다",
       "리더의 핵심 행동을 합의합니다",
@@ -351,14 +351,32 @@ export const ITEM_IDS: readonly string[] = CONFIG.axes.flatMap((ax) => ax.items.
 /** 사분면 셀 라벨 (프로토타입 결과지 블록 2) */
 export const QUADRANT_CELLS: Record<QuadrantKey, { title: string; sub: string }> = {
   hilo: { title: "의지는 있으나 여력이 부족", sub: "작게 시작해 역량을 키우는 전략" },
-  hihi: { title: "큰 변화를 설계할 수 있음", sub: "이행형에서 전환형까지" },
+  hihi: { title: "큰 변화를 설계할 수 있음", sub: "개편형에서 재설계형까지" },
   lolo: { title: "기반부터 만들어야 함", sub: "신뢰 회복이 먼저" },
   lohi: { title: "원하는 힘이 약함", sub: "스폰서십 확보가 먼저" },
 };
 
-/** 변화 유형 3종 설명 (프로토타입 결과지 블록 4) */
-export const SIZES: { key: SizeKey; name: string; desc: string }[] = [
-  { key: "develop", name: "개선형", desc: "지금 하는 일을 더 잘하게 다듬는 변화. 회의 방식 개선, 보고 간소화 같은 과제" },
-  { key: "transition", name: "이행형", desc: "정해 둔 새로운 모습으로 조직을 옮기는 변화. 새 제도의 도입과 정착 같은 과제" },
-  { key: "transform", name: "전환형", desc: "일하는 방식과 정체성까지 다시 만드는 변화. 조직문화 전반의 재설계" },
+/** 변화 유형 3종 설명 (결과지 블록 4). 정의, 구성원에게 미치는 영향, 회의 소재로 통일한 예시 */
+export const SIZES: { key: SizeKey; name: string; def: string; impact: string; ex: string }[] = [
+  {
+    key: "develop",
+    name: "개선형",
+    def: "지금의 제도와 방식을 유지하면서 다듬는 변화",
+    impact: "구성원의 일상은 거의 그대로입니다",
+    ex: "안건을 미리 공유하는 회의 규칙 정비",
+  },
+  {
+    key: "transition",
+    name: "개편형",
+    def: "정해 둔 새 제도와 프로세스로 바꾸는 변화",
+    impact: "구성원이 새 방식을 배워야 합니다",
+    ex: "회의체 통폐합과 새 의사결정 프로세스 도입",
+  },
+  {
+    key: "transform",
+    name: "재설계형",
+    def: "구조와 일하는 방식의 전제까지 다시 설계하는 변화",
+    impact: "구성원의 역할과 관계가 다시 정의됩니다",
+    ex: "회의에서 결정한다는 전제를 바꿔 현장이 직접 결정하도록 권한 구조를 다시 설계",
+  },
 ];

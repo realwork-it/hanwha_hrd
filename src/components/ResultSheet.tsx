@@ -69,7 +69,7 @@ export default function ResultSheet({ scored }: Props) {
               </div>
               <div className="mout">
                 <div className="on">가능한 변화 유형</div>
-                <div className="od">개선형, 이행형, 전환형 중 지금 감당할 수 있는 범위</div>
+                <div className="od">개선형, 개편형, 재설계형 중 지금 감당할 수 있는 범위</div>
               </div>
             </div>
           </div>
@@ -78,13 +78,6 @@ export default function ResultSheet({ scored }: Props) {
             <br />
             어떤 유형으로, 어떤 순서로 하느냐를 정합니다.
           </div>
-          <p className="refs">
-            구성개념 참조. 동력과 역량의 구분은 Weiner(2009)의 조직 변화 준비도 이론(변화 몰입과 변화 효능감), 영역의 내용은
-            Armenakis, Harris, Mossholder(1993)와 Holt 외(2007)의 준비도 구성 요인, 변화 이력 영역은 변화 냉소 연구(Reichers,
-            Wanous, Austin 1997)와 Bandura(1977)의 효능감 원천, 변화 유형 3분류는 Anderson과 Ackerman Anderson(2001), 전략 제언은
-            Beckhard와 Harris(1987)의 변화 공식과 Weick(1984)의 작은 승리 연구를 참조했습니다. 문항과 기준선은 리얼워크가 작성했고
-            응답 데이터가 쌓이면 보정합니다.
-          </p>
         </div>
 
         <div className="rblock">
@@ -194,16 +187,28 @@ export default function ResultSheet({ scored }: Props) {
               <div className={`seg${i <= openUpto ? " open" : ""}${i === openUpto ? " cap" : ""}`} key={s.key}>
                 <span className="captag">여기까지 시도 가능</span>
                 <b>{s.name}</b>
-                <small>{s.desc}</small>
+                <small className="def">{s.def}.</small>
+                <small>{s.impact}.</small>
+                <small className="ex">예. {s.ex}</small>
               </div>
             ))}
           </div>
+          <div className="cont" aria-hidden="true">
+            <span>부분적</span>
+            <div className="cline" />
+            <span>전면적</span>
+          </div>
+          <p className="contnote">
+            <span className="dir-h">오른쪽으로</span>
+            <span className="dir-v">아래로</span> 갈수록 구성원에게 미치는 영향이 커지고 더 많은 동력과 역량이 필요합니다. 큰 유형은 작은
+            유형에 필요한 활동을 전부 포함합니다.
+          </p>
           <p className="sizecap">
             {size === "transform"
-              ? "전환형까지 검토해 볼 수 있는 상태입니다. 일하는 방식 자체를 다시 설계하는 과제도 시도해 볼 만합니다."
+              ? "재설계형까지 검토해 볼 수 있는 상태입니다. 일하는 방식 자체를 다시 설계하는 과제도 시도해 볼 만합니다."
               : size === "transition"
-                ? "이행형까지 검토해 볼 수 있습니다. 전환형은 동력과 역량이 더 단단해진 뒤에 고려하시기를 권합니다."
-                : `지금은 개선형부터 시작하시기를 권합니다. ${weak} 쪽이 보강되면 이행형도 검토할 수 있습니다. 범위가 좁다는 것은 하지 말라는 뜻이 아니라 이 유형에서 먼저 성공을 만들자는 뜻입니다.`}
+                ? "개편형까지 검토해 볼 수 있습니다. 재설계형은 동력과 역량이 더 단단해진 뒤에 고려하시기를 권합니다."
+                : `지금은 개선형부터 시작하시기를 권합니다. ${weak} 쪽이 보강되면 개편형도 검토할 수 있습니다. 범위가 좁다는 것은 하지 말라는 뜻이 아니라 이 유형에서 먼저 성공을 만들자는 뜻입니다.`}
           </p>
         </div>
 
