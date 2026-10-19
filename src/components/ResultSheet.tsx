@@ -39,7 +39,7 @@ export default function ResultSheet({ scored }: Props) {
               <div className="mgroup">
                 <div className="gl">변화를 원하게 하는 영역</div>
                 <div className="gi">A. 경영진 스폰서십</div>
-                <div className="gi">B. 변화 필요성의 긴장</div>
+                <div className="gi">B. 변화 필요성 인식</div>
                 <div className="gi">C. 구성원 열의</div>
               </div>
               <div className="mgroup">
