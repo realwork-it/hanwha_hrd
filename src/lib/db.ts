@@ -29,6 +29,8 @@ interface Store {
   getById(id: string): Promise<ResponseRow | null>;
   listStaffByCompany(company: string): Promise<ResponseRow[]>;
   listAll(): Promise<ResponseSummary[]>;
+  /** 분포 화면용. 원점수까지 포함한 전체 응답 */
+  listAllFull(): Promise<ResponseRow[]>;
 }
 
 // ---------- Supabase (운영) ----------
@@ -73,6 +75,11 @@ function supabaseStore(client: SupabaseClient): Store {
         .order("created_at", { ascending: false });
       if (error) throw new Error(`listAll failed: ${error.message}`);
       return (data as ResponseSummary[]) ?? [];
+    },
+    async listAllFull() {
+      const { data, error } = await client.from(T).select(cols).order("created_at", { ascending: false });
+      if (error) throw new Error(`listAllFull failed: ${error.message}`);
+      return (data as ResponseRow[]) ?? [];
     },
   };
 }
@@ -126,6 +133,7 @@ function fileStore(): Store {
           return rest;
         })
         .sort((a, b) => b.created_at.localeCompare(a.created_at)),
+    listAllFull: async () => (await read()).sort((a, b) => b.created_at.localeCompare(a.created_at)),
   };
 }
 

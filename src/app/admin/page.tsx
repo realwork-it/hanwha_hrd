@@ -3,6 +3,8 @@ import { db, type ResponseSummary } from "@/lib/db";
 import { COMPANIES } from "@/lib/companies";
 import { isAuthed } from "./auth";
 import { login, logout } from "./actions";
+import Overview from "@/components/Overview";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +23,8 @@ const fmt = new Intl.DateTimeFormat("ko-KR", {
 });
 
 export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
-  const { error } = await searchParams;
+  const { error, tab } = await searchParams;
+  const activeTab = tab === "overview" ? "overview" : "status";
   const authed = await isAuthed();
 
   if (!authed) {
@@ -61,8 +64,34 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
   const companies = [...COMPANIES, ...[...byCompany.keys()].filter((c) => !COMPANIES.includes(c)).sort()];
   const submittedCompanies = companies.filter((c) => byCompany.get(c)!.staff.length > 0).length;
 
+  const tabs = (
+    <nav className="tabs noprint" aria-label="현황판 탭">
+      <Link href="/admin" className={activeTab === "status" ? "on" : ""} aria-current={activeTab === "status" ? "page" : undefined}>
+        응답 현황
+      </Link>
+      <Link href="/admin?tab=overview" className={activeTab === "overview" ? "on" : ""} aria-current={activeTab === "overview" ? "page" : undefined}>
+        전체 분포
+      </Link>
+    </nav>
+  );
+
+  if (activeTab === "overview") {
+    return (
+      <Shell>
+        {tabs}
+        <Overview />
+        <form action={logout} style={{ marginTop: 16 }}>
+          <button type="submit" className="btn small ghost">
+            로그아웃
+          </button>
+        </form>
+      </Shell>
+    );
+  }
+
   return (
     <Shell>
+      {tabs}
       <div className="kpis">
         <div className="kpi">
           <div className="kl">담당자 제출</div>
