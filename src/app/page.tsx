@@ -1,69 +1,33 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import SurveyApp from "@/components/SurveyApp";
+import SiteFooter from "@/components/SiteFooter";
 
-export default function Home() {
+export default function StaffPage() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <>
+      <div className="band">
+        <div className="inner">
+          <p className="eyebrow">REALWORK | 조직개발 준비도 진단 | 조직문화 담당자용</p>
+          <h1>조직개발 준비도 진단</h1>
+          <p className="lede">
+            같은 과제도 조직의 준비 상태에 따라 결과가 다릅니다. 15문항에 답하면{" "}
+            <b>지금 우리 조직에서 가능한 변화 유형과 접근 전략, 첫걸음</b>까지 결과지로 받습니다.
           </p>
+          <div className="chips">
+            <span className="chip">15문항, 약 10분</span>
+            <span className="chip">평가가 아닙니다</span>
+            <span className="chip">결과는 접근법과 첫걸음까지</span>
+          </div>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </div>
+
+      <div className="wrap">
+        <div className="notice">
+          <b>결과는 본인에게 바로 표시되고 3일차 비교 화면에서 같은 계열사 팀장에게 함께 표시됩니다.</b> 솔직하게 답할수록
+          제언이 정확해집니다. 제출하면 결과지 링크가 만들어지고, 그 링크로 역장분석 내내 다시 볼 수 있습니다.
         </div>
-      </main>
-    </div>
+        <SurveyApp role="staff" />
+        <SiteFooter />
+      </div>
+    </>
   );
 }

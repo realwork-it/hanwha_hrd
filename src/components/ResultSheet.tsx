@@ -1,0 +1,247 @@
+// 결과지 7개 블록. 프로토타입 v0.9 결과지의 구조와 문구를 그대로 옮겼다.
+import { CONFIG, QUADRANT_CELLS, SIZES, type QuadrantKey } from "@/lib/config";
+import { f1, pos, type Scored } from "@/lib/score";
+
+interface Props {
+  scored: Scored;
+}
+
+const forceNote = (f: string) => (f === "mo" ? "동력" : f === "ca" ? "역량" : "동력과 역량");
+
+export function Badge({ v }: { v: number }) {
+  return v >= CONFIG.CUT ? <span className="badge hi">기준선 위</span> : <span className="badge lo">기준선 아래</span>;
+}
+
+export default function ResultSheet({ scored }: Props) {
+  const { axes, mo, ca, quadrant, size, borderMo, borderCa, flagged } = scored;
+  const CUT = CONFIG.CUT;
+  const qd = CONFIG.quadrants[quadrant];
+  const order = SIZES.map((s) => s.key);
+  const openUpto = order.indexOf(size);
+  const weak = mo < ca ? "동력" : "역량";
+  const bn = [borderMo ? "동력" : null, borderCa ? "역량" : null].filter(Boolean) as string[];
+  const cellOrder: QuadrantKey[] = ["hilo", "hihi", "lolo", "lohi"];
+
+  return (
+    <>
+      <div className="result-band" id="result">
+        <div className="rt">결과지</div>
+        <div className="rs">제출한 응답으로 자동 생성되었습니다.</div>
+      </div>
+      <div className="rbody">
+        <div className="rblock">
+          <h3>
+            <span className="bn">0</span>결과를 읽는 틀, 변화 준비도 2요인 모델
+          </h3>
+          <p className="bs">이 결과지는 준비도를 총점 하나로 말하지 않습니다. 성격이 다른 두 힘으로 나누어 읽습니다.</p>
+          <div className="model">
+            <div className="mcol">
+              <div className="mgroup">
+                <div className="gl">변화를 원하게 하는 영역</div>
+                <div className="gi">A. 경영진 스폰서십</div>
+                <div className="gi">B. 변화 필요성의 긴장</div>
+                <div className="gi">C. 구성원 열의</div>
+              </div>
+              <div className="mgroup">
+                <div className="gl">변화를 해내게 하는 영역</div>
+                <div className="gi">C. 구성원 피로감</div>
+                <div className="gi">D. 변화 이력</div>
+                <div className="gi">E. 추진 주체</div>
+                <div className="gi">F. 가용 자원</div>
+              </div>
+            </div>
+            <div className="marr" aria-hidden="true">→</div>
+            <div className="mcol">
+              <div className="mforce mo">
+                <div className="fn">동력</div>
+                <div className="fd">변화를 원하는 힘. 이것이 약하면 시작이 어렵습니다</div>
+              </div>
+              <div className="mforce ca">
+                <div className="fn">역량</div>
+                <div className="fd">변화를 해낼 힘. 이것이 약하면 중간에 멈추기 쉽습니다</div>
+              </div>
+            </div>
+            <div className="marr" aria-hidden="true">→</div>
+            <div className="mcol">
+              <div className="mout">
+                <div className="on">접근 전략</div>
+                <div className="od">동력과 역량의 조합이 네 가지 접근법 중 하나를 가리킵니다</div>
+              </div>
+              <div className="mout">
+                <div className="on">가능한 변화 유형</div>
+                <div className="od">개선형, 이행형, 전환형 중 지금 감당할 수 있는 범위</div>
+              </div>
+            </div>
+          </div>
+          <div className="principle">
+            준비도는 변화를 하느냐 마느냐를 정하지 않습니다.
+            <br />
+            어떤 유형으로, 어떤 순서로 하느냐를 정합니다.
+          </div>
+          <p className="refs">
+            구성개념 참조. 동력과 역량의 구분은 Weiner(2009)의 조직 변화 준비도 이론(변화 몰입과 변화 효능감), 영역의 내용은
+            Armenakis, Harris, Mossholder(1993)와 Holt 외(2007)의 준비도 구성 요인, 변화 이력 영역은 변화 냉소 연구(Reichers,
+            Wanous, Austin 1997)와 Bandura(1977)의 효능감 원천, 변화 유형 3분류는 Anderson과 Ackerman Anderson(2001), 전략 제언은
+            Beckhard와 Harris(1987)의 변화 공식과 Weick(1984)의 작은 승리 연구를 참조했습니다. 문항과 기준선은 리얼워크가 작성했고
+            응답 데이터가 쌓이면 보정합니다.
+          </p>
+        </div>
+
+        <div className="rblock">
+          <h3>
+            <span className="bn">1</span>여섯 영역 프로파일
+          </h3>
+          <p className="bs">점선은 기준선 2.75입니다. 지금은 임시 기준이고 데이터가 쌓이면 보정합니다.</p>
+          <div className="bars">
+            {axes.map((ax) => (
+              <div className="brow" key={ax.id}>
+                <div className="bl">
+                  {ax.id}. {ax.name}
+                  <small>{forceNote(ax.force)}</small>
+                </div>
+                <div className="track">
+                  <div className="fill" style={{ width: `${(ax.score / 4) * 100}%` }} />
+                  <div className="cutline" style={{ left: `${(CUT / 4) * 100}%` }} />
+                </div>
+                <div className="bval">{f1(ax.score)}</div>
+              </div>
+            ))}
+          </div>
+          <p className="cutnote">
+            막대는 4점 만점이고 영역 안 문항들의 평균입니다. 아래의 동력과 역량은 영역 평균이 아니라 문항 단위로 다시 계산합니다.
+          </p>
+        </div>
+
+        <div className="rblock">
+          <h3>
+            <span className="bn">2</span>동력과 역량의 좌표
+          </h3>
+          <p className="bs">우리 조직이 네 상태 중 어디에 있는지 보여 줍니다.</p>
+          <div className="coordwrap">
+            <div className="coordbox">
+              <div className="axlab v">↑ 동력, 변화를 원하는 힘</div>
+              <div className="coord">
+                <div className="grid2">
+                  {cellOrder.map((k) => (
+                    <div className={`cell${k === quadrant ? " on" : ""}`} key={k}>
+                      <b>{QUADRANT_CELLS[k].title}</b>
+                      {QUADRANT_CELLS[k].sub}
+                    </div>
+                  ))}
+                  <div className="dot" style={{ left: `${pos(ca)}%`, bottom: `${pos(mo)}%` }} />
+                </div>
+                <div className="axlab">역량, 변화를 해낼 힘 →</div>
+              </div>
+            </div>
+            <div className="coordside">
+              <div className="scorepair">
+                <div className="scorebox">
+                  <div className="sl">동력</div>
+                  <div className="sv">
+                    {f1(mo)}
+                    <small> /4</small>
+                    <Badge v={mo} />
+                  </div>
+                </div>
+                <div className="scorebox">
+                  <div className="sl">역량</div>
+                  <div className="sv">
+                    {f1(ca)}
+                    <small> /4</small>
+                    <Badge v={ca} />
+                  </div>
+                </div>
+              </div>
+              {bn.length > 0 && (
+                <div className="borderline">
+                  {bn.join("과 ")}이 기준선 가까이에 있습니다. 경계 구간에서는 이웃한 접근법도 함께 읽고 보수적인 쪽을 고르세요.
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="rblock">
+          <h3>
+            <span className="bn">3</span>접근 전략과 첫걸음
+          </h3>
+          <div className="approach">
+            <div className="an">{qd.name}</div>
+            <div className="ad">{qd.diag}</div>
+            <div className="as">{qd.strat}</div>
+            <div className="fs">이번 분기의 첫걸음</div>
+            <ol>
+              {qd.steps.map((s) => (
+                <li key={s}>{s}</li>
+              ))}
+            </ol>
+          </div>
+        </div>
+
+        <div className="rblock">
+          <h3>
+            <span className="bn">4</span>지금 가능한 변화 유형
+          </h3>
+          <p className="bs">
+            동력과 역량의 수준을 바탕으로 지금 시도해 볼 만한 변화 유형을 보여 줍니다. 색이 칠해진 유형부터 검토해 보세요.
+          </p>
+          <div className="size3">
+            {SIZES.map((s, i) => (
+              <div className={`seg${i <= openUpto ? " open" : ""}${i === openUpto ? " cap" : ""}`} key={s.key}>
+                <span className="captag">여기까지 시도 가능</span>
+                <b>{s.name}</b>
+                <small>{s.desc}</small>
+              </div>
+            ))}
+          </div>
+          <p className="sizecap">
+            {size === "transform"
+              ? "전환형까지 검토해 볼 수 있는 상태입니다. 일하는 방식 자체를 다시 설계하는 과제도 시도해 볼 만합니다."
+              : size === "transition"
+                ? "이행형까지 검토해 볼 수 있습니다. 전환형은 동력과 역량이 더 단단해진 뒤에 고려하시기를 권합니다."
+                : `지금은 개선형부터 시작하시기를 권합니다. ${weak} 쪽이 보강되면 이행형도 검토할 수 있습니다. 범위가 좁다는 것은 하지 말라는 뜻이 아니라 이 유형에서 먼저 성공을 만들자는 뜻입니다.`}
+          </p>
+        </div>
+
+        <div className="rblock">
+          <h3>
+            <span className="bn">5</span>낮은 영역에 대한 제언
+          </h3>
+          <p className="bs">기준에 못 미친 영역 가운데 가장 낮은 것부터 최대 세 개까지 보여 줍니다.</p>
+          <div className="rxlist">
+            {flagged.length > 0 ? (
+              flagged.map((r) => (
+                <div className="rx" key={r.key}>
+                  <div className="rn">
+                    {r.name}
+                    <span className="sc">{f1(r.score)} /4</span>
+                  </div>
+                  <div className="rt2">{r.rx}</div>
+                  <span className="lk">{r.lk}</span>
+                </div>
+              ))
+            ) : (
+              <div className="rxnone">기준에 크게 못 미친 영역이 없습니다. 접근 전략의 첫걸음으로 바로 넘어가세요.</div>
+            )}
+          </div>
+        </div>
+
+        <div className="rblock">
+          <h3>
+            <span className="bn">6</span>이 결과를 쓰는 법
+          </h3>
+          <div className="honest">
+            <b>이 결과는 측정이 아니라 설계의 출발점입니다.</b>
+            담당자 한 사람이 본 조직의 모습을 구조화한 것이라 조직의 실제와 다를 수 있습니다. 위 여섯 영역 가운데 가장 자신 없는
+            영역 하나를 골라 Quick Survey나 리더 면담으로 확인하는 것까지가 이 진단의 완성입니다. 결과지는 변화과제 기획서의 배경
+            자료로 쓰세요. 과제를 마친 뒤 같은 문항으로 다시 진단하면 동력과 역량이 어떻게 달라졌는지도 보입니다.
+            <span className="more">
+              바로 이어지는 역장분석에서는 이 결과지를 옆에 펴 두세요. 기준선 위의 영역은 변화를 촉진하는 요인의 후보이고 기준선
+              아래의 영역은 저해하는 요인의 후보입니다.
+            </span>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
