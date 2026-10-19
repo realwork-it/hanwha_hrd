@@ -49,7 +49,8 @@ export default function Overview() {
   const [data, setData] = useState<OverviewData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showNames, setShowNames] = useState(false);
-  const [showLeaders, setShowLeaders] = useState(false);
+  // 표시 집단. 1일차에는 담당자만 있고, 3일차에는 팀장만 보거나 둘을 겹쳐 본다.
+  const [mode, setMode] = useState<"staff" | "leader" | "both">("staff");
   const [board, setBoard] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
 
@@ -105,13 +106,17 @@ export default function Overview() {
 
   const staff = useMemo(() => data?.staff ?? [], [data]);
   const leaders = useMemo(() => data?.leaders ?? [], [data]);
-  const staffClusters = useMemo(() => clusters(staff, "staff"), [staff]);
+  const showStaff = mode !== "leader";
+  const showLeaders = mode !== "staff";
+  const staffClusters = useMemo(() => (showStaff ? clusters(staff, "staff") : []), [staff, showStaff]);
   const leaderClusters = useMemo(() => (showLeaders ? clusters(leaders, "leader") : []), [leaders, showLeaders]);
-  const counts = useMemo(() => {
+  const countBy = (arr: OverviewPoint[]) => {
     const c: Record<QuadrantKey, number> = { hihi: 0, hilo: 0, lohi: 0, lolo: 0 };
-    staff.forEach((p) => (c[p.quadrant as QuadrantKey] += 1));
+    arr.forEach((p) => (c[p.quadrant as QuadrantKey] += 1));
     return c;
-  }, [staff]);
+  };
+  const staffCounts = useMemo(() => countBy(staff), [staff]);
+  const leaderCounts = useMemo(() => countBy(leaders), [leaders]);
   const avg = (arr: OverviewPoint[], k: "mo" | "ca") => (arr.length ? arr.reduce((s, p) => s + p[k], 0) / arr.length : 0);
   const cutX = PAD.l + PW / 2;
   const cutY = PAD.t + PH / 2;
@@ -121,24 +126,36 @@ export default function Overview() {
     <div ref={wrapRef} className={`overview${board ? " board" : ""}`}>
       <div className="ovhead">
         <div>
-          <div className="ovtitle">변화를 원하는 힘과 해낼 힘의 좌표, 전체 분포</div>
+          <div className="ovtitle">변화를 원하는 힘과 해낼 힘의 좌표, 응답 분포</div>
           <div className="ovsub">
-            계열사마다 가장 최근 담당자 응답 1건을 점으로 찍었습니다. 같은 자리에 겹치면 점이 커지고 수가 적힙니다.
-            {updated && ` 마지막 갱신 ${updated}, 30초마다 자동 갱신.`}
+            {mode === "leader"
+              ? "팀장 응답을 모두 점으로 찍었습니다."
+              : mode === "both"
+                ? "파란 점은 계열사마다 가장 최근 담당자 응답 1건, 주황 점은 팀장 응답입니다."
+                : "계열사마다 가장 최근 담당자 응답 1건을 점으로 찍었습니다."}{" "}
+            같은 자리에 겹치면 점이 커지고 수가 적힙니다.
+            {updated && <span className="upd">마지막 갱신 {updated}, 30초마다 자동 갱신.</span>}
           </div>
         </div>
         <div className="ovctl noprint">
           <label>
             <input type="checkbox" checked={showNames} onChange={(e) => setShowNames(e.target.checked)} /> 계열사 이름 표시
           </label>
-          <label>
-            <input type="checkbox" checked={showLeaders} onChange={(e) => setShowLeaders(e.target.checked)} /> 팀장 응답 겹쳐 보기
-          </label>
-          {showLeaders && (
-            <span className="ovmini">
-              <i className="st" /> 담당자 <i className="ld" /> 팀장
-            </span>
-          )}
+          <span className="ovmode" role="radiogroup" aria-label="표시할 응답">
+            <span className="ovmodel">표시</span>
+            <label>
+              <input type="radio" name="ovmode" checked={mode === "staff"} onChange={() => setMode("staff")} /> <i className="st" />
+              담당자
+            </label>
+            <label className={leaders.length === 0 ? "off" : ""}>
+              <input type="radio" name="ovmode" checked={mode === "leader"} disabled={leaders.length === 0} onChange={() => setMode("leader")} />{" "}
+              <i className="ld" />
+              팀장{leaders.length === 0 ? " (아직 없음)" : ""}
+            </label>
+            <label className={leaders.length === 0 ? "off" : ""}>
+              <input type="radio" name="ovmode" checked={mode === "both"} disabled={leaders.length === 0} onChange={() => setMode("both")} /> 함께
+            </label>
+          </span>
           {board ? (
             <button type="button" className="btn small ghost" onClick={exitBoard}>
               전체 화면 닫기 (Esc)
@@ -177,7 +194,9 @@ export default function Overview() {
                   className="ovcount"
                   textAnchor="end"
                 >
-                  {counts[q.key]}
+                  {showStaff && <tspan className="st">{staffCounts[q.key]}</tspan>}
+                  {showStaff && showLeaders && <tspan className="sep"> / </tspan>}
+                  {showLeaders && <tspan className="ld">{leaderCounts[q.key]}</tspan>}
                 </text>
                 <text
                   x={PAD.l + (q.x * PW) / 2 + PW / 2 - 14}
@@ -185,7 +204,7 @@ export default function Overview() {
                   className="ovcountl"
                   textAnchor="end"
                 >
-                  계열사
+                  {mode === "staff" ? "계열사" : mode === "leader" ? "팀장" : "담당자 / 팀장"}
                 </text>
               </g>
             ))}
@@ -236,17 +255,27 @@ export default function Overview() {
         </div>
 
         <div className="ovside">
-          <div className="kpi">
-            <div className="kl">응답한 계열사 수</div>
-            <div className="kv">{staff.length}</div>
-          </div>
+          {showStaff && (
+            <div className="kpi">
+              <div className="kl">응답한 계열사 수</div>
+              <div className="kv st">{staff.length}</div>
+            </div>
+          )}
+          {showLeaders && (
+            <div className="kpi">
+              <div className="kl">응답한 팀장 수</div>
+              <div className="kv ld">{leaders.length}</div>
+            </div>
+          )}
           <div className="kpi">
             <div className="kl">변화를 원하는 힘 평균</div>
-            <div className="kv">{staff.length ? f1(avg(staff, "mo")) : "-"}</div>
+            {showStaff && <div className="kv st">{staff.length ? f1(avg(staff, "mo")) : "-"}{showLeaders && <small> 담당자</small>}</div>}
+            {showLeaders && <div className="kv ld">{leaders.length ? f1(avg(leaders, "mo")) : "-"}{showStaff && <small> 팀장</small>}</div>}
           </div>
           <div className="kpi">
             <div className="kl">변화를 해낼 힘 평균</div>
-            <div className="kv">{staff.length ? f1(avg(staff, "ca")) : "-"}</div>
+            {showStaff && <div className="kv st">{staff.length ? f1(avg(staff, "ca")) : "-"}{showLeaders && <small> 담당자</small>}</div>}
+            {showLeaders && <div className="kv ld">{leaders.length ? f1(avg(leaders, "ca")) : "-"}{showStaff && <small> 팀장</small>}</div>}
           </div>
         </div>
       </div>

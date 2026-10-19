@@ -9,7 +9,7 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "응답 현황 | 조직변화 준비도 체크",
+  title: "응답 대시보드 | 조직변화 준비도 체크",
   robots: { index: false, follow: false },
 };
 
@@ -43,7 +43,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
               )}
             </div>
             <button type="submit" className="btn">
-              현황 보기
+              대시보드 열기
             </button>
           </form>
         </div>
@@ -65,12 +65,12 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
   const submittedCompanies = companies.filter((c) => byCompany.get(c)!.staff.length > 0).length;
 
   const tabs = (
-    <nav className="tabs noprint" aria-label="현황판 탭">
+    <nav className="tabs noprint" aria-label="대시보드 탭">
       <Link href="/admin" className={activeTab === "status" ? "on" : ""} aria-current={activeTab === "status" ? "page" : undefined}>
-        응답 현황
+        제출 현황
       </Link>
       <Link href="/admin?tab=overview" className={activeTab === "overview" ? "on" : ""} aria-current={activeTab === "overview" ? "page" : undefined}>
-        전체 분포
+        응답 분포
       </Link>
     </nav>
   );
@@ -178,7 +178,7 @@ function Shell({ children }: { children: React.ReactNode }) {
       <div className="band compact">
         <div className="inner">
           <p className="eyebrow">REALWORK | 조직변화 준비도 체크 | 진행자용</p>
-          <h1>응답 현황</h1>
+          <h1>응답 대시보드</h1>
         </div>
       </div>
       <div className="wrap" style={{ paddingTop: 24 }}>
