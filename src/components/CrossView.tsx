@@ -18,7 +18,7 @@ interface Props {
   leaderToken: string;
 }
 
-const forceNote = (f: string) => (f === "mo" ? "동력" : f === "ca" ? "역량" : "동력과 역량");
+const forceNote = (f: string) => (f === "mo" ? "변화를 원하는 힘" : f === "ca" ? "변화를 해낼 힘" : "원하는 힘과 해낼 힘");
 
 export default function CrossView({ leader, staff, staffLabel, staffOptions, currentStaffId, leaderToken }: Props) {
   const CUT = CONFIG.CUT;

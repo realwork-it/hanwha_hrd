@@ -6,7 +6,7 @@ interface Props {
   scored: Scored;
 }
 
-const forceNote = (f: string) => (f === "mo" ? "동력" : f === "ca" ? "역량" : "동력과 역량");
+const forceNote = (f: string) => (f === "mo" ? "변화를 원하는 힘" : f === "ca" ? "변화를 해낼 힘" : "원하는 힘과 해낼 힘");
 
 export function Badge({ v }: { v: number }) {
   return v >= CONFIG.CUT ? <span className="badge hi">기준선 위</span> : <span className="badge lo">기준선 아래</span>;
@@ -18,7 +18,7 @@ export default function ResultSheet({ scored }: Props) {
   const qd = CONFIG.quadrants[quadrant];
   const order = SIZES.map((s) => s.key);
   const openUpto = order.indexOf(size);
-  const weak = mo < ca ? "동력" : "역량";
+  const weak = mo < ca ? "변화를 원하는 힘" : "변화를 해낼 힘";
   const bn = [borderMo ? "변화를 원하는 힘" : null, borderCa ? "변화를 해낼 힘" : null].filter(Boolean) as string[];
   const cellOrder: QuadrantKey[] = ["hilo", "hihi", "lolo", "lohi"];
 
@@ -33,7 +33,7 @@ export default function ResultSheet({ scored }: Props) {
           <h3>
             <span className="bn">0</span>결과를 읽는 틀, 변화 준비도 2요인 모델
           </h3>
-          <p className="bs">이 결과지는 준비도를 총점 하나로 말하지 않습니다. 성격이 다른 두 힘으로 나누어 읽습니다.</p>
+          <p className="bs">이 결과지는 준비도를 총점 하나로 말하지 않습니다. 성격이 다른 변화를 원하는 힘과 변화를 해낼 힘으로 나누어 읽습니다.</p>
           <div className="model">
             <div className="mcol">
               <div className="mgroup">
@@ -53,19 +53,19 @@ export default function ResultSheet({ scored }: Props) {
             <div className="marr" aria-hidden="true">→</div>
             <div className="mcol">
               <div className="mforce mo">
-                <div className="fn">동력</div>
-                <div className="fd">변화를 원하는 힘. 이것이 약하면 시작이 어렵습니다</div>
+                <div className="fn">변화를 원하는 힘</div>
+                <div className="fd">이것이 약하면 시작이 어렵습니다</div>
               </div>
               <div className="mforce ca">
-                <div className="fn">역량</div>
-                <div className="fd">변화를 해낼 힘. 이것이 약하면 중간에 멈추기 쉽습니다</div>
+                <div className="fn">변화를 해낼 힘</div>
+                <div className="fd">이것이 약하면 중간에 멈추기 쉽습니다</div>
               </div>
             </div>
             <div className="marr" aria-hidden="true">→</div>
             <div className="mcol">
               <div className="mout">
                 <div className="on">접근 전략</div>
-                <div className="od">동력과 역량의 조합이 네 가지 접근법 중 하나를 가리킵니다</div>
+                <div className="od">원하는 힘과 해낼 힘의 조합이 네 가지 접근법 중 하나를 가리킵니다</div>
               </div>
               <div className="mout">
                 <div className="on">가능한 변화 유형</div>
@@ -101,7 +101,7 @@ export default function ResultSheet({ scored }: Props) {
             ))}
           </div>
           <p className="cutnote">
-            막대는 4점 만점이고 영역 안 문항들의 평균입니다. 아래의 동력과 역량은 영역 평균이 아니라 문항 단위로 다시 계산합니다.
+            막대는 4점 만점이고 영역 안 문항들의 평균입니다. 아래의 변화를 원하는 힘과 해낼 힘은 영역 평균이 아니라 문항 단위로 다시 계산합니다.
           </p>
         </div>
 
@@ -180,7 +180,7 @@ export default function ResultSheet({ scored }: Props) {
             <span className="bn">4</span>지금 가능한 변화 유형
           </h3>
           <p className="bs">
-            동력과 역량의 수준을 바탕으로 지금 시도해 볼 만한 변화 유형을 보여 줍니다. 색이 칠해진 유형부터 검토해 보세요.
+            변화를 원하는 힘과 해낼 힘의 수준을 바탕으로 지금 시도해 볼 만한 변화 유형을 보여 줍니다. 색이 칠해진 유형부터 검토해 보세요.
           </p>
           <div className="size3">
             {SIZES.map((s, i) => (
@@ -200,14 +200,14 @@ export default function ResultSheet({ scored }: Props) {
           </div>
           <p className="contnote">
             <span className="dir-h">오른쪽으로</span>
-            <span className="dir-v">아래로</span> 갈수록 구성원에게 미치는 영향이 커지고 더 많은 동력과 역량이 필요합니다. 큰 유형은 작은
+            <span className="dir-v">아래로</span> 갈수록 구성원에게 미치는 영향이 커지고 변화를 원하는 힘과 해낼 힘이 더 많이 필요합니다. 큰 유형은 작은
             유형에 필요한 활동을 전부 포함합니다.
           </p>
           <p className="sizecap">
             {size === "transform"
               ? "재설계형까지 검토해 볼 수 있는 상태입니다. 일하는 방식 자체를 다시 설계하는 과제도 시도해 볼 만합니다."
               : size === "transition"
-                ? "개편형까지 검토해 볼 수 있습니다. 재설계형은 동력과 역량이 더 단단해진 뒤에 고려하시기를 권합니다."
+                ? "개편형까지 검토해 볼 수 있습니다. 재설계형은 변화를 원하는 힘과 해낼 힘이 더 단단해진 뒤에 고려하시기를 권합니다."
                 : `지금은 개선형부터 시작하시기를 권합니다. ${weak} 쪽이 보강되면 개편형도 검토할 수 있습니다. 범위가 좁다는 것은 하지 말라는 뜻이 아니라 이 유형에서 먼저 성공을 만들자는 뜻입니다.`}
           </p>
         </div>
@@ -243,11 +243,7 @@ export default function ResultSheet({ scored }: Props) {
             <b>이 결과는 측정이 아니라 설계의 출발점입니다.</b>
             담당자 한 사람이 본 조직의 모습을 구조화한 것이라 조직의 실제와 다를 수 있습니다. 위 여섯 영역 가운데 가장 자신 없는
             영역 하나를 골라 Quick Survey나 리더 면담으로 확인하는 것까지가 이 진단의 완성입니다. 결과지는 변화과제 기획서의 배경
-            자료로 쓰세요. 과제를 마친 뒤 같은 문항으로 다시 진단하면 동력과 역량이 어떻게 달라졌는지도 보입니다.
-            <span className="more">
-              바로 이어지는 역장분석에서는 이 결과지를 옆에 펴 두세요. 기준선 위의 영역은 변화를 촉진하는 요인의 후보이고 기준선
-              아래의 영역은 저해하는 요인의 후보입니다.
-            </span>
+            자료로 쓰세요. 과제를 마친 뒤 같은 문항으로 다시 진단하면 변화를 원하는 힘과 해낼 힘이 어떻게 달라졌는지도 보입니다.
           </div>
         </div>
       </div>

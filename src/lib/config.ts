@@ -79,7 +79,7 @@ const axes: readonly Axis[] = [
     id: "B",
     name: "변화 필요성 인식",
     force: "mo",
-    why: "바뀌어야 할 이유를 조직이 같이 느끼고 있는지 봅니다. 긴장이 없으면 동력이 만들어지지 않습니다.",
+    why: "바뀌어야 할 이유를 조직이 같이 느끼고 있는지 봅니다. 긴장이 없으면 변화를 원하는 힘이 만들어지지 않습니다.",
     items: [
       {
         id: "B1",
@@ -322,7 +322,7 @@ const quadrants: Record<QuadrantKey, Quadrant> = {
   },
   lolo: {
     name: "기반부터 만들어야 하는 상태",
-    diag: "동력과 역량이 모두 기준선 아래입니다. 여기서 큰 과제를 시작하면 실패 경험만 하나 더 쌓입니다.",
+    diag: "변화를 원하는 힘과 해낼 힘이 모두 기준선 아래입니다. 여기서 큰 과제를 시작하면 실패 경험만 하나 더 쌓입니다.",
     strat: "올해는 개선형에 집중합니다. 담당자 권한 안에서 되는 것부터 시작하세요. 특히 지난 진단 결과를 구성원에게 돌려주는 일이 첫 과제입니다. 신뢰가 쌓인 뒤에 더 큰 과제를 설계합니다.",
     steps: [
       "지난 진단 결과를 돌려주는 자리를 만듭니다",
@@ -350,7 +350,7 @@ export const ITEM_IDS: readonly string[] = CONFIG.axes.flatMap((ax) => ax.items.
 
 /** 사분면 셀 라벨 (프로토타입 결과지 블록 2) */
 export const QUADRANT_CELLS: Record<QuadrantKey, { title: string; sub: string }> = {
-  hilo: { title: "의지는 있으나 여력이 부족", sub: "작게 시작해 역량을 키우는 전략" },
+  hilo: { title: "의지는 있으나 여력이 부족", sub: "작게 시작해 해낼 힘을 키우는 전략" },
   hihi: { title: "큰 변화를 설계할 수 있음", sub: "개편형에서 재설계형까지" },
   lolo: { title: "기반부터 만들어야 함", sub: "신뢰 회복이 먼저" },
   lohi: { title: "원하는 힘이 약함", sub: "스폰서십 확보가 먼저" },
