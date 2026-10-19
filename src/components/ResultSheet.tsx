@@ -119,7 +119,11 @@ export default function ResultSheet({ scored }: Props) {
           <p className="bs">우리 조직이 네 상태 중 어디에 있는지 보여 줍니다.</p>
           <div className="coordwrap">
             <div className="coordbox">
-              <div className="axlab v">↑ 동력, 변화를 원하는 힘</div>
+              <div className="axlab v">
+                <span className="lab">
+                  <span className="arr-v">↑ </span>동력, 변화를 원하는 힘<span className="arr-h"> →</span>
+                </span>
+              </div>
               <div className="coord">
                 <div className="grid2">
                   {cellOrder.map((k) => (

@@ -65,7 +65,11 @@ export default function CrossView({ leader, staff, staffLabel, staffOptions, cur
           </div>
           <div className="coordwrap">
             <div className="coordbox">
-              <div className="axlab v">↑ 동력, 변화를 원하는 힘</div>
+              <div className="axlab v">
+                <span className="lab">
+                  <span className="arr-v">↑ </span>동력, 변화를 원하는 힘<span className="arr-h"> →</span>
+                </span>
+              </div>
               <div className="coord">
                 <div className="grid2">
                   {cellOrder.map((k) => (
