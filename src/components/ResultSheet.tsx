@@ -19,7 +19,7 @@ export default function ResultSheet({ scored }: Props) {
   const order = SIZES.map((s) => s.key);
   const openUpto = order.indexOf(size);
   const weak = mo < ca ? "동력" : "역량";
-  const bn = [borderMo ? "동력" : null, borderCa ? "역량" : null].filter(Boolean) as string[];
+  const bn = [borderMo ? "변화를 원하는 힘" : null, borderCa ? "변화를 해낼 힘" : null].filter(Boolean) as string[];
   const cellOrder: QuadrantKey[] = ["hilo", "hihi", "lolo", "lohi"];
 
   return (
@@ -107,7 +107,7 @@ export default function ResultSheet({ scored }: Props) {
 
         <div className="rblock">
           <h3>
-            <span className="bn">2</span>동력과 역량의 좌표
+            <span className="bn">2</span>변화를 원하는 힘과 해낼 힘의 좌표
           </h3>
           <p className="bs">우리 조직이 네 상태 중 어디에 있는지 보여 줍니다.</p>
           <div className="coordwrap">
@@ -133,7 +133,7 @@ export default function ResultSheet({ scored }: Props) {
             <div className="coordside">
               <div className="scorepair">
                 <div className="scorebox">
-                  <div className="sl">동력</div>
+                  <div className="sl">변화를 원하는 힘</div>
                   <div className="sv">
                     {f1(mo)}
                     <small> /4</small>
@@ -141,7 +141,7 @@ export default function ResultSheet({ scored }: Props) {
                   </div>
                 </div>
                 <div className="scorebox">
-                  <div className="sl">역량</div>
+                  <div className="sl">변화를 해낼 힘</div>
                   <div className="sv">
                     {f1(ca)}
                     <small> /4</small>

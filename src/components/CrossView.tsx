@@ -56,7 +56,7 @@ export default function CrossView({ leader, staff, staffLabel, staffOptions, cur
             </p>
           )}
           <h3>
-            <span className="bn">가</span>동력과 역량의 좌표, 두 점
+            <span className="bn">가</span>변화를 원하는 힘과 해낼 힘의 좌표, 두 점
           </h3>
           <p className="bs">비교 대상 담당자 응답: {staffLabel}</p>
           <div className="legend">
@@ -93,7 +93,7 @@ export default function CrossView({ leader, staff, staffLabel, staffOptions, cur
             <div className="coordside">
               <div className="scorepair">
                 <div className="scorebox">
-                  <div className="sl">동력</div>
+                  <div className="sl">변화를 원하는 힘</div>
                   <div className="sv" style={{ fontSize: 18 }}>
                     <span style={{ color: "var(--leader)" }}>팀장 {f1(leader.mo)}</span>
                     <Badge v={leader.mo} />
@@ -104,7 +104,7 @@ export default function CrossView({ leader, staff, staffLabel, staffOptions, cur
                   </div>
                 </div>
                 <div className="scorebox">
-                  <div className="sl">역량</div>
+                  <div className="sl">변화를 해낼 힘</div>
                   <div className="sv" style={{ fontSize: 18 }}>
                     <span style={{ color: "var(--leader)" }}>팀장 {f1(leader.ca)}</span>
                     <Badge v={leader.ca} />
