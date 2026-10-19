@@ -187,14 +187,8 @@ export default function SurveyApp({ role }: Props) {
         </div>
         <div className="field">
           <label htmlFor="name">
-            {role === "leader" ? "이름이나 소속" : "이름"}
-            {role === "leader" ? (
-              <span className="req" aria-hidden="true">*</span>
-            ) : (
-              <span className="hint" style={{ fontWeight: 400, marginLeft: 6 }}>
-                선택
-              </span>
-            )}
+            {role === "leader" ? "이름이나 소속" : "이름 (선택 입력)"}
+            {role === "leader" && <span className="req" aria-hidden="true">*</span>}
           </label>
           <input
             type="text"
@@ -280,6 +274,7 @@ export default function SurveyApp({ role }: Props) {
           {!company && " 상단에서 계열사를 골라 주세요."}
           {company && !nameOk && " 상단에 이름이나 소속을 적어 주세요."}
         </div>
+        <div className="st">제출 후에는 응답을 수정할 수 없습니다. 제출 전에 한 번 확인해 주세요.</div>
         <button type="button" className="btn" onClick={submit} disabled={submitting} aria-disabled={!ready}>
           {submitting ? "제출 중" : error ? "다시 제출" : "제출하고 결과지 보기"}
         </button>

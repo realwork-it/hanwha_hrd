@@ -15,7 +15,6 @@ export interface RxResult {
   name: string;
   score: number;
   rx: string;
-  lk: string;
 }
 
 export interface Scored {
@@ -55,12 +54,12 @@ export function score(answers: Answers): Scored {
     mo >= CONFIG.SIZE_HI && ca >= CONFIG.SIZE_HI ? "transform" : hiMo && hiCa ? "transition" : "develop";
   const axes = CONFIG.axes.map((ax) => ({
     id: ax.id,
-    name: ax.name,
+    name: ax.resultName ?? ax.name,
     force: ax.force,
     score: mean(ax.items.map((i) => i.id), answers),
   }));
   const flagged = CONFIG.rxAxes
-    .map((r) => ({ key: r.key, name: r.name, rx: r.rx, lk: r.lk, score: mean(r.calc, answers) }))
+    .map((r) => ({ key: r.key, name: r.name, rx: r.rx, score: mean(r.calc, answers) }))
     .filter((r) => r.score <= CONFIG.RX_CUT)
     .sort((a, b) => a.score - b.score)
     .slice(0, CONFIG.RX_MAX);

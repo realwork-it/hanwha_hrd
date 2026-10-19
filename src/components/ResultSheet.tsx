@@ -33,7 +33,7 @@ export default function ResultSheet({ scored }: Props) {
           <h3>
             <span className="bn">0</span>결과를 읽는 틀, 변화 준비도 2요인 모델
           </h3>
-          <p className="bs">이 결과지는 준비도를 총점 하나로 말하지 않습니다. 성격이 다른 변화를 원하는 힘과 변화를 해낼 힘으로 나누어 읽습니다.</p>
+          <p className="bs">이 결과지는 준비도를 총점 하나로 말하지 않습니다. 성격이 다른 두 가지, 변화를 원하는 힘과 변화를 해낼 힘으로 나누어 읽습니다.</p>
           <div className="model">
             <div className="mcol">
               <div className="mgroup">
@@ -84,7 +84,7 @@ export default function ResultSheet({ scored }: Props) {
           <h3>
             <span className="bn">1</span>여섯 영역 프로파일
           </h3>
-          <p className="bs">점선은 기준선 2.75입니다. 지금은 임시 기준이고 데이터가 쌓이면 보정합니다.</p>
+          <p className="bs">점선은 기준선 2.75입니다.</p>
           <div className="bars">
             {axes.map((ax) => (
               <div className="brow" key={ax.id}>
@@ -226,11 +226,10 @@ export default function ResultSheet({ scored }: Props) {
                     <span className="sc">{f1(r.score)} /4</span>
                   </div>
                   <div className="rt2">{r.rx}</div>
-                  <span className="lk">{r.lk}</span>
                 </div>
               ))
             ) : (
-              <div className="rxnone">기준에 크게 못 미친 영역이 없습니다. 접근 전략의 첫걸음으로 바로 넘어가세요.</div>
+              <div className="rxnone">기준에 크게 못 미친 영역이 없습니다. 접근 전략의 추천 활동으로 바로 넘어가세요.</div>
             )}
           </div>
         </div>
@@ -241,8 +240,8 @@ export default function ResultSheet({ scored }: Props) {
           </h3>
           <div className="honest">
             <b>이 결과는 측정이 아니라 설계의 출발점입니다.</b>
-            담당자 한 사람이 본 조직의 모습을 구조화한 것이라 조직의 실제와 다를 수 있습니다. 위 여섯 영역 가운데 가장 자신 없는
-            영역 하나를 골라 Quick Survey나 리더 면담으로 확인하는 것까지가 이 진단의 완성입니다. 결과지는 변화과제 기획서의 배경
+            응답한 한 사람이 본 조직의 모습을 구조화한 것이라 조직의 실제와 다를 수 있습니다. 위 여섯 영역 가운데 가장 자신 없는
+            영역 하나를 골라 짧은 설문이나 리더 면담으로 확인하는 것까지가 이 진단의 완성입니다. 결과지는 변화과제 기획서의 배경
             자료로 쓰세요. 과제를 마친 뒤 같은 문항으로 다시 진단하면 변화를 원하는 힘과 해낼 힘이 어떻게 달라졌는지도 보입니다.
           </div>
         </div>
