@@ -175,7 +175,7 @@ export default function Overview() {
                 {showStaff && (
                   <text
                     x={PAD.l + (q.x * PW) / 2 + PW / 2 - 14}
-                    y={PAD.t + (q.y * PH) / 2 + PH / 2 - (showLeaders ? 34 : 14)}
+                    y={PAD.t + (q.y * PH) / 2 + PH / 2 - (showLeaders ? 28 : 10)}
                     className="ovcount st"
                     textAnchor="end"
                   >
@@ -186,7 +186,7 @@ export default function Overview() {
                 {showLeaders && (
                   <text
                     x={PAD.l + (q.x * PW) / 2 + PW / 2 - 14}
-                    y={PAD.t + (q.y * PH) / 2 + PH / 2 - 14}
+                    y={PAD.t + (q.y * PH) / 2 + PH / 2 - 10}
                     className="ovcount ld"
                     textAnchor="end"
                   >

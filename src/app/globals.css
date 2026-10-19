@@ -301,9 +301,9 @@ h2 { font-weight: 700; font-size: 22px; margin: 52px 0 6px; text-wrap: balance; 
 .ovcell { fill: var(--sheet); stroke: var(--line); stroke-width: 1; }
 .ovcellt { font-size: 13px; font-weight: 700; fill: var(--ink); }
 .ovcells { font-size: 11px; fill: var(--sub); }
-.ovcount { font-size: 34px; font-weight: 700; fill: var(--accent2); opacity: .55; }
+.ovcount { font-size: 17px; font-weight: 700; fill: var(--accent); opacity: .75; }
 .ovcount.ld { fill: var(--leader); }
-.ovcountl { font-size: 13px; font-weight: 700; }
+.ovcountl { font-size: 11px; font-weight: 700; }
 .ovfoot { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-top: 10px; font-size: 11.5px; color: var(--sub); }
 .ovfoot label { display: inline-flex; gap: 5px; align-items: center; cursor: pointer; }
 .ovfoot input { accent-color: var(--accent); width: 13px; height: 13px; }
@@ -337,8 +337,8 @@ h2 { font-weight: 700; font-size: 22px; margin: 52px 0 6px; text-wrap: balance; 
 .overview.board .kpi .kl { font-size: 14px; }
 .overview.board .overview.board .overview.board .overview.board .overview.board .ovcellt { font-size: 15px; }
 .overview.board .ovcells { font-size: 12px; }
-.overview.board .ovcount { font-size: 52px; }
-.overview.board .ovcountl { font-size: 18px; }
+.overview.board .ovcount { font-size: 24px; }
+.overview.board .ovcountl { font-size: 14px; }
 .overview.board .ovaxis { font-size: 14px; }
 
 footer { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 14px; font-size: 12px; color: var(--sub); }
