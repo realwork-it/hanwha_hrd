@@ -212,6 +212,9 @@ h2 { font-weight: 700; font-size: 22px; margin: 52px 0 6px; text-wrap: balance; 
 .size3 .seg.cap small { opacity: .92; }
 .size3 .seg .captag { display: none; font-size: 10.5px; font-weight: 700; background: #fff; color: var(--accent); border-radius: 999px; padding: 1px 9px; margin-bottom: 5px; }
 .size3 .seg.cap .captag { display: inline-block; }
+/* 큰 변화 상태에서 아직 열리지 않은 재설계형. 회색 대신 점선으로 다음 단계임을 보여 준다 */
+.size3 .seg.next { border: 1.5px dashed var(--accent); background: var(--surface); color: var(--ink); }
+.size3 .seg .nexttag { display: inline-block; font-size: 10.5px; font-weight: 700; color: var(--accent); background: var(--pale); border-radius: 999px; padding: 1px 9px; margin-bottom: 5px; }
 .size3 .seg small.def { font-weight: 500; color: inherit; margin-bottom: 2px; }
 .size3 .seg small.ex { margin-top: 4px; opacity: .85; }
 .cont { display: flex; align-items: center; gap: 10px; font-size: 11.5px; color: var(--sub); margin: 10px 2px 2px; }
