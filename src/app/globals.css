@@ -293,11 +293,15 @@ h2 { font-weight: 700; font-size: 22px; margin: 52px 0 6px; text-wrap: balance; 
 .ovbody { display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; }
 .ovchart { flex: 1 1 420px; min-width: 0; }
 .ovchart svg { width: 100%; height: auto; display: block; }
-.ovside { flex: 0 1 220px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.ovside { flex: 0 1 190px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .ovcell { fill: var(--sheet); stroke: var(--line); stroke-width: 1; }
 .ovcellt { font-size: 13px; font-weight: 700; fill: var(--ink); }
 .ovcells { font-size: 11px; fill: var(--sub); }
-.ovcount { font-size: 44px; font-weight: 700; fill: var(--pale); }
+.ovcount { font-size: 40px; font-weight: 700; fill: var(--accent2); opacity: .45; }
+.ovcountl { font-size: 11px; font-weight: 700; fill: var(--accent2); opacity: .7; }
+.ovmini { display: inline-flex; gap: 8px; align-items: center; font-size: 12.5px; color: var(--sub); }
+.ovmini i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
+.ovmini i.st { background: var(--accent); } .ovmini i.ld { background: var(--leader); }
 .ovcut { stroke: var(--sub); stroke-width: 1.5; stroke-dasharray: 5 4; opacity: .7; }
 .ovaxis { font-size: 12.5px; fill: var(--sub); font-weight: 500; }
 .ovtick { font-size: 10.5px; fill: var(--sub); }
@@ -305,12 +309,6 @@ h2 { font-weight: 700; font-size: 22px; margin: 52px 0 6px; text-wrap: balance; 
 .ovdot.leader circle { fill: var(--leader); }
 .ovdot .ovn { font-size: 11px; font-weight: 700; fill: #fff; }
 .ovdot .ovname { font-size: 11px; fill: var(--ink); paint-order: stroke; stroke: var(--surface); stroke-width: 3px; }
-.ovlegend { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; }
-.ovlegend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
-.ovlegend .lg-staff::before { background: var(--accent); }
-.ovlegend .lg-leader::before { background: var(--leader); }
-.ovquads { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; color: var(--sub); border-top: 1px solid var(--line); padding-top: 8px; }
-.ovquads b { color: var(--ink); font-size: 15px; margin-right: 4px; font-variant-numeric: tabular-nums; }
 
 /* 발표용 전체 화면 */
 .overview.board { position: fixed; inset: 0; z-index: 100; border: none; border-radius: 0; padding: 24px 36px; overflow: auto; background: var(--bg); display: flex; flex-direction: column; }
@@ -321,14 +319,13 @@ h2 { font-weight: 700; font-size: 22px; margin: 52px 0 6px; text-wrap: balance; 
 .overview.board .ovchart { flex: 1 1 auto; min-width: 0; min-height: 0; display: flex; align-items: center; justify-content: center; }
 /* viewBox 비율을 지키며 가로세로 중 작은 쪽에 맞춰 최대로 키운다 */
 .overview.board .ovchart svg { width: 100%; height: 100%; }
-.overview.board .ovside { flex: 0 0 280px; justify-content: center; }
+.overview.board .ovside { flex: 0 0 230px; justify-content: center; }
 .overview.board .kpi .kv { font-size: 40px; }
 .overview.board .kpi .kl { font-size: 14px; }
-.overview.board .ovquads, .overview.board .ovlegend { font-size: 16px; }
-.overview.board .ovquads b { font-size: 24px; }
-.overview.board .ovcellt { font-size: 15px; }
+.overview.board .overview.board .overview.board .overview.board .overview.board .ovcellt { font-size: 15px; }
 .overview.board .ovcells { font-size: 12px; }
-.overview.board .ovcount { font-size: 64px; }
+.overview.board .ovcount { font-size: 60px; }
+.overview.board .ovcountl { font-size: 14px; }
 .overview.board .ovaxis { font-size: 14px; }
 
 footer { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 14px; font-size: 12px; color: var(--sub); }

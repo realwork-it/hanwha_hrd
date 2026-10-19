@@ -134,6 +134,11 @@ export default function Overview() {
           <label>
             <input type="checkbox" checked={showLeaders} onChange={(e) => setShowLeaders(e.target.checked)} /> 팀장 응답 겹쳐 보기
           </label>
+          {showLeaders && (
+            <span className="ovmini">
+              <i className="st" /> 담당자 <i className="ld" /> 팀장
+            </span>
+          )}
           {board ? (
             <button type="button" className="btn small ghost" onClick={exitBoard}>
               전체 화면 닫기 (Esc)
@@ -168,11 +173,19 @@ export default function Overview() {
                 </text>
                 <text
                   x={PAD.l + (q.x * PW) / 2 + PW / 2 - 14}
-                  y={PAD.t + (q.y * PH) / 2 + PH / 2 - 12}
+                  y={PAD.t + (q.y * PH) / 2 + PH / 2 - 26}
                   className="ovcount"
                   textAnchor="end"
                 >
                   {counts[q.key]}
+                </text>
+                <text
+                  x={PAD.l + (q.x * PW) / 2 + PW / 2 - 14}
+                  y={PAD.t + (q.y * PH) / 2 + PH / 2 - 10}
+                  className="ovcountl"
+                  textAnchor="end"
+                >
+                  계열사
                 </text>
               </g>
             ))}
@@ -234,17 +247,6 @@ export default function Overview() {
           <div className="kpi">
             <div className="kl">변화를 해낼 힘 평균</div>
             <div className="kv">{staff.length ? f1(avg(staff, "ca")) : "-"}</div>
-          </div>
-          <div className="ovlegend">
-            <span className="lg-staff">담당자 응답 (계열사마다 가장 최근 1건)</span>
-            {showLeaders && <span className="lg-leader">팀장 ({leaders.length}건)</span>}
-          </div>
-          <div className="ovquads">
-            {(["hihi", "hilo", "lohi", "lolo"] as QuadrantKey[]).map((k) => (
-              <div key={k} className="ovq">
-                <b>{counts[k]}</b> {CONFIG.quadrants[k].name}
-              </div>
-            ))}
           </div>
         </div>
       </div>
