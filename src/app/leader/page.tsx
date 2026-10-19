@@ -21,10 +21,6 @@ export default function LeaderPage() {
       </div>
 
       <div className="wrap">
-        <div className="notice">
-          <b>결과는 본인에게 바로 표시되고, 같은 계열사 조직문화 담당자의 결과와 나란히 놓은 교차 보기가 함께 표시됩니다.</b>{" "}
-          두 결과의 차이는 틀린 것이 아니라 서로 다르게 보고 있다는 신호입니다. 솔직하게 답할수록 대화 주제가 또렷해집니다.
-        </div>
         <SurveyApp role="leader" />
         <SiteFooter />
       </div>

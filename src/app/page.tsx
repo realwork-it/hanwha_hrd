@@ -21,10 +21,6 @@ export default function StaffPage() {
       </div>
 
       <div className="wrap">
-        <div className="notice">
-          <b>결과는 본인에게 바로 표시되고 3일차 비교 화면에서 같은 계열사 팀장에게 함께 표시됩니다.</b> 솔직하게 답할수록
-          제언이 정확해집니다. 제출하면 결과지 링크가 만들어지고, 그 링크로 역장분석 내내 다시 볼 수 있습니다.
-        </div>
         <SurveyApp role="staff" />
         <SiteFooter />
       </div>
