@@ -106,7 +106,10 @@ export default function AxOverview() {
                 <span className="axid">{n === 0 ? "시작" : n}</span>
                 <span className="axname">{it.cat}</span>
               </div>
-              <div className="axq">{it.t}</div>
+              <div className="axq">
+                {it.t}
+                {it.multi && <span className="axmulti"> 복수 응답, 최대 {it.multi}개. 비율은 응답자 수 기준</span>}
+              </div>
               <div className="axbars">
                 {it.o.map((o, i) => {
                   const c = counts[i];

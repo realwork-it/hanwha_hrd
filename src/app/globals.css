@@ -351,6 +351,8 @@ h2 { font-weight: 700; font-size: 22px; margin: 52px 0 6px; text-wrap: balance; 
 .axch .axid { font-size: 15px; }
 .axch .axname { font-size: 13.5px; }
 .axq { font-size: 13px; color: var(--sub); margin-bottom: 10px; }
+.axmulti { display: block; font-size: 11.5px; color: var(--accent); margin-top: 2px; }
+.opts label.dim { opacity: .5; }
 .axbars { display: flex; flex-direction: column; gap: 7px; }
 .axrow { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) 58px; gap: 8px; align-items: center; font-size: 12.5px; }
 .axlabel { min-width: 0; }

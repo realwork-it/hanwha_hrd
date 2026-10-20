@@ -21,7 +21,10 @@ export async function GET() {
     const counts = new Array<number>(it.o.length).fill(0);
     rows.forEach((r) => {
       const v = r.answers[it.id];
-      if (typeof v === "number" && v >= 0 && v < counts.length) counts[v] += 1;
+      const picks = Array.isArray(v) ? v : typeof v === "number" ? [v] : [];
+      picks.forEach((n) => {
+        if (n >= 0 && n < counts.length) counts[n] += 1;
+      });
     });
     return { id: it.id, counts };
   });

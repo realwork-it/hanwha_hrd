@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AX_ITEMS, AX_ITEM_IDS, type AxAnswers } from "@/lib/ax";
+import { AX_INTRO, AX_ITEMS, isAnswered, type AxAnswers } from "@/lib/ax";
 import { COMPANIES, OTHER_COMPANY } from "@/lib/companies";
 
 interface Draft {
@@ -71,15 +71,27 @@ export default function AxSurvey() {
   }, [hydrated, done, companySel, companyText, name, answers]);
 
   const company = (companySel === OTHER_COMPANY ? companyText : companySel).trim();
-  const answered = AX_ITEM_IDS.filter((id) => answers[id] != null).length;
-  const total = AX_ITEM_IDS.length;
+  const answered = AX_ITEMS.filter((it) => isAnswered(it, answers[it.id])).length;
+  const total = AX_ITEMS.length;
   const ready = answered === total && company.length > 0;
-  const missing = showMissing ? new Set(AX_ITEM_IDS.filter((id) => answers[id] == null)) : new Set<string>();
+  const missing = showMissing ? new Set(AX_ITEMS.filter((it) => !isAnswered(it, answers[it.id])).map((it) => it.id)) : new Set<string>();
+
+  // 복수 선택. 단독 보기를 고르면 나머지를 비우고, 최대 개수를 넘으면 더 고를 수 없다.
+  function toggleMulti(itemId: string, idx: number, max: number, exclusive: number | undefined) {
+    setAnswers((a) => {
+      const cur = Array.isArray(a[itemId]) ? (a[itemId] as number[]) : [];
+      if (cur.includes(idx)) return { ...a, [itemId]: cur.filter((n) => n !== idx) };
+      if (idx === exclusive) return { ...a, [itemId]: [idx] };
+      const base = exclusive != null ? cur.filter((n) => n !== exclusive) : cur;
+      if (base.length >= max) return a;
+      return { ...a, [itemId]: [...base, idx].sort((x, y) => x - y) };
+    });
+  }
 
   async function submit() {
     if (!ready) {
       setShowMissing(true);
-      const first = AX_ITEM_IDS.find((id) => answers[id] == null);
+      const first = AX_ITEMS.find((it) => !isAnswered(it, answers[it.id]))?.id;
       if (!company) document.getElementById("ax_company")?.scrollIntoView({ block: "center" });
       else if (first) document.getElementById(`ax_${first}`)?.scrollIntoView({ block: "center" });
       return;
@@ -175,8 +187,10 @@ export default function AxSurvey() {
         </div>
       </div>
 
-      <h2>일곱 문항</h2>
-      <p className="h2sub">느낌이 아니라 우리 회사의 지금 장면에 가장 가까운 것을 고르세요. 모르면 모르겠다를 고르는 것도 답입니다.</p>
+      <h2>여덟 문항</h2>
+      <p className="h2sub">
+        {AX_INTRO} 느낌이 아니라 지금 보이고 들리는 장면에 가장 가까운 것을 고르세요. 모르면 모르겠다를 고르는 것도 답입니다.
+      </p>
 
       <div className="progress" role="status" aria-live="polite">
         <div className="pl">
@@ -199,20 +213,47 @@ export default function AxSurvey() {
                 <span className="axname">{it.cat}</span>
               </div>
               <div className="qt">{it.t}</div>
-              <div className="opts" role="radiogroup" aria-label={it.t}>
-                {it.o.map((o, i) => (
-                  <label key={i}>
-                    <input
-                      type="radio"
-                      name={`ax_${it.id}`}
-                      value={i}
-                      checked={answers[it.id] === i}
-                      onChange={() => setAnswers((a) => ({ ...a, [it.id]: i }))}
-                    />
-                    <span>{o}</span>
-                  </label>
-                ))}
-              </div>
+              {it.multi ? (
+                <div className="opts" role="group" aria-label={it.t}>
+                  {it.o.map((o, i) => {
+                    const cur = Array.isArray(answers[it.id]) ? (answers[it.id] as number[]) : [];
+                    const checked = cur.includes(i);
+                    const full = cur.length >= (it.multi ?? 1) && !checked;
+                    const lockedByExclusive = it.exclusive != null && cur.includes(it.exclusive) && i !== it.exclusive;
+                    return (
+                      <label key={i} className={full || lockedByExclusive ? "dim" : ""}>
+                        <input
+                          type="checkbox"
+                          name={`ax_${it.id}`}
+                          value={i}
+                          checked={checked}
+                          disabled={lockedByExclusive}
+                          onChange={() => toggleMulti(it.id, i, it.multi ?? 1, it.exclusive)}
+                        />
+                        <span>{o}</span>
+                      </label>
+                    );
+                  })}
+                  <div className="hint" style={{ paddingLeft: 10 }}>
+                    {(Array.isArray(answers[it.id]) ? (answers[it.id] as number[]).length : 0)} / {it.multi}개 선택
+                  </div>
+                </div>
+              ) : (
+                <div className="opts" role="radiogroup" aria-label={it.t}>
+                  {it.o.map((o, i) => (
+                    <label key={i}>
+                      <input
+                        type="radio"
+                        name={`ax_${it.id}`}
+                        value={i}
+                        checked={answers[it.id] === i}
+                        onChange={() => setAnswers((a) => ({ ...a, [it.id]: i }))}
+                      />
+                      <span>{o}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
             </div>
           </section>
         ))}
