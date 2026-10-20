@@ -4,6 +4,7 @@ import { COMPANIES } from "@/lib/companies";
 import { isAuthed } from "./auth";
 import { login, logout } from "./actions";
 import Overview from "@/components/Overview";
+import AxOverview from "@/components/AxOverview";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -24,7 +25,7 @@ const fmt = new Intl.DateTimeFormat("ko-KR", {
 
 export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
   const { error, tab } = await searchParams;
-  const activeTab = tab === "overview" ? "overview" : "status";
+  const activeTab = tab === "overview" ? "overview" : tab === "ax" ? "ax" : "status";
   const authed = await isAuthed();
 
   if (!authed) {
@@ -72,8 +73,25 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
       <Link href="/admin?tab=overview" className={activeTab === "overview" ? "on" : ""} aria-current={activeTab === "overview" ? "page" : undefined}>
         응답 분포
       </Link>
+      <Link href="/admin?tab=ax" className={activeTab === "ax" ? "on" : ""} aria-current={activeTab === "ax" ? "page" : undefined}>
+        AX 퀵 서베이
+      </Link>
     </nav>
   );
+
+  if (activeTab === "ax") {
+    return (
+      <Shell>
+        {tabs}
+        <AxOverview />
+        <form action={logout} style={{ marginTop: 16 }}>
+          <button type="submit" className="btn small ghost">
+            로그아웃
+          </button>
+        </form>
+      </Shell>
+    );
+  }
 
   if (activeTab === "overview") {
     return (

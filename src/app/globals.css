@@ -344,6 +344,37 @@ h2 { font-weight: 700; font-size: 22px; margin: 52px 0 6px; text-wrap: balance; 
 .overview.board .ovcountl { font-size: 14px; }
 .overview.board .ovaxis { font-size: 14px; }
 
+/* AX 퀵 서베이 집계 */
+.axgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; margin-top: 6px; }
+.axcard { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; background: var(--sheet); min-width: 0; }
+.axch { display: flex; gap: 8px; align-items: baseline; margin-bottom: 2px; }
+.axch .axid { font-size: 15px; }
+.axch .axname { font-size: 13.5px; }
+.axq { font-size: 13px; color: var(--sub); margin-bottom: 10px; }
+.axbars { display: flex; flex-direction: column; gap: 7px; }
+.axrow { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) 58px; gap: 8px; align-items: center; font-size: 12.5px; }
+.axlabel { min-width: 0; }
+.axtrack { height: 12px; background: var(--pale); border-radius: 6px; overflow: hidden; }
+.axfill { height: 100%; background: var(--accent2); border-radius: 6px; transition: width .3s; }
+.axrow.top .axfill { background: var(--accent); }
+.axrow.top .axlabel { font-weight: 700; }
+.axval { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+.axval small { font-weight: 400; color: var(--sub); }
+.axpick { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 6px; padding: 2px 9px; font-size: 12px; cursor: pointer; }
+.axpick:hover { border-color: var(--accent); color: var(--accent); }
+.overview.board.axov .axgrid { grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 14px; flex: 1 1 auto; min-height: 0; overflow: auto; align-content: start; }
+.overview.board.axov .axcard { padding: 16px 18px; }
+.overview.board.axov .axq { font-size: 15px; }
+.overview.board.axov .axrow { font-size: 15px; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) 72px; }
+.overview.board.axov .axtrack { height: 16px; }
+.overview.board.axov .axch .axname { font-size: 16px; }
+/* 한 문항만 크게 볼 때 */
+.overview.board.axov .axgrid:has(> .axcard:only-child) { grid-template-columns: minmax(0, 900px); justify-content: center; }
+.overview.board.axov .axgrid > .axcard:only-child .axq { font-size: 22px; color: var(--ink); margin: 6px 0 18px; }
+.overview.board.axov .axgrid > .axcard:only-child .axrow { font-size: 20px; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) 100px; gap: 14px; }
+.overview.board.axov .axgrid > .axcard:only-child .axtrack { height: 26px; }
+.overview.board.axov .axgrid > .axcard:only-child .axbars { gap: 14px; }
+
 footer { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 14px; font-size: 12px; color: var(--sub); }
 
 @media (max-width: 640px) {

@@ -4,6 +4,7 @@ import { randomBytes } from "node:crypto";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import type { Answers } from "./score";
+import type { AxAnswers } from "./ax";
 
 export type Role = "staff" | "leader";
 
@@ -14,6 +15,14 @@ export interface ResponseRow {
   company: string;
   name: string | null;
   answers: Answers;
+  created_at: string;
+}
+
+export interface AxRow {
+  id: string;
+  company: string;
+  name: string | null;
+  answers: AxAnswers;
   created_at: string;
 }
 
@@ -31,6 +40,9 @@ interface Store {
   listAll(): Promise<ResponseSummary[]>;
   /** 분포 화면용. 원점수까지 포함한 전체 응답 */
   listAllFull(): Promise<ResponseRow[]>;
+  /** AX 퀵 서베이 */
+  insertAx(row: Omit<AxRow, "id" | "created_at">): Promise<AxRow>;
+  listAx(): Promise<AxRow[]>;
 }
 
 // ---------- Supabase (운영) ----------
@@ -81,12 +93,33 @@ function supabaseStore(client: SupabaseClient): Store {
       if (error) throw new Error(`listAllFull failed: ${error.message}`);
       return (data as ResponseRow[]) ?? [];
     },
+    async insertAx(row) {
+      const { data, error } = await client.from("ax_responses").insert(row).select("id, company, name, answers, created_at").single();
+      if (error) throw new Error(`insertAx failed: ${error.message}`);
+      return data as AxRow;
+    },
+    async listAx() {
+      const { data, error } = await client
+        .from("ax_responses")
+        .select("id, company, name, answers, created_at")
+        .order("created_at", { ascending: false });
+      if (error) throw new Error(`listAx failed: ${error.message}`);
+      return (data as AxRow[]) ?? [];
+    },
   };
 }
 
 // ---------- 로컬 파일 (개발용. SUPABASE_URL이 없을 때만) ----------
 function fileStore(): Store {
   const file = path.join(process.cwd(), ".data", "responses.json");
+  const axFile = path.join(process.cwd(), ".data", "ax.json");
+  const readAx = async (): Promise<AxRow[]> => {
+    try {
+      return JSON.parse(await fs.readFile(axFile, "utf8")) as AxRow[];
+    } catch {
+      return [];
+    }
+  };
   let chain: Promise<unknown> = Promise.resolve();
   const read = async (): Promise<ResponseRow[]> => {
     try {
@@ -134,6 +167,16 @@ function fileStore(): Store {
         })
         .sort((a, b) => b.created_at.localeCompare(a.created_at)),
     listAllFull: async () => (await read()).sort((a, b) => b.created_at.localeCompare(a.created_at)),
+    insertAx: (row) =>
+      serial(async () => {
+        const rows = await readAx();
+        const full: AxRow = { ...row, id: randomBytes(16).toString("hex"), created_at: new Date().toISOString() };
+        rows.push(full);
+        await fs.mkdir(path.dirname(axFile), { recursive: true });
+        await fs.writeFile(axFile, JSON.stringify(rows, null, 2), "utf8");
+        return full;
+      }),
+    listAx: async () => (await readAx()).sort((a, b) => b.created_at.localeCompare(a.created_at)),
   };
 }
 
