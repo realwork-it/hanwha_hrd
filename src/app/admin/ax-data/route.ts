@@ -10,6 +10,8 @@ export interface AxCounts {
   total: number;
   companies: number;
   items: { id: string; counts: number[] }[];
+  /** 주관식 응답. 누가 썼는지 짐작할 수 없도록 순서를 섞어 보낸다 */
+  texts: { id: string; answers: string[] }[];
   updatedAt: string;
 }
 
@@ -17,7 +19,19 @@ export interface AxCounts {
 export async function GET() {
   if (!(await isAuthed())) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   const rows = await db().listAx();
-  const items = AX_ITEMS.map((it) => {
+  const shuffle = <T,>(arr: T[]): T[] => {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
+  const texts = AX_ITEMS.filter((it) => it.kind === "text").map((it) => ({
+    id: it.id,
+    answers: shuffle(rows.map((r) => r.answers[it.id]).filter((v): v is string => typeof v === "string" && v.trim().length > 0)),
+  }));
+  const items = AX_ITEMS.filter((it) => it.kind !== "text").map((it) => {
     const counts = new Array<number>(it.o.length).fill(0);
     rows.forEach((r) => {
       const v = r.answers[it.id];
@@ -32,6 +46,7 @@ export async function GET() {
     total: rows.length,
     companies: new Set(rows.map((r) => r.company)).size,
     items,
+    texts,
     updatedAt: new Date().toISOString(),
   };
   return NextResponse.json(body, { headers: { "Cache-Control": "no-store" } });

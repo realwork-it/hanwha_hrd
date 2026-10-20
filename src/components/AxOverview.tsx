@@ -109,7 +109,30 @@ export default function AxOverview() {
               <div className="axq">
                 {it.t}
                 {it.multi && <span className="axmulti"> 복수 응답, 최대 {it.multi}개. 비율은 응답자 수 기준</span>}
+                {it.kind === "scale" && (
+                  <span className="axmulti">
+                    {" "}
+                    5점 추이 문항. 평균{" "}
+                    {(() => {
+                      const n = counts.reduce((s, c) => s + c, 0);
+                      const sum = counts.reduce((s, c, i) => s + c * (i + 1), 0);
+                      return n ? (sum / n).toFixed(2) : "-";
+                    })()}{" "}
+                    / 5
+                  </span>
+                )}
+                {it.kind === "text" && (
+                  <span className="axmulti"> 주관식. 순서를 섞어 보여 줍니다</span>
+                )}
               </div>
+              {it.kind === "text" ? (
+                <ul className="axtexts">
+                  {(data?.texts.find((x) => x.id === it.id)?.answers ?? []).map((t, i) => (
+                    <li key={i}>{t}</li>
+                  ))}
+                  {(data?.texts.find((x) => x.id === it.id)?.answers.length ?? 0) === 0 && <li className="none">아직 적힌 내용이 없습니다.</li>}
+                </ul>
+              ) : (
               <div className="axbars">
                 {it.o.map((o, i) => {
                   const c = counts[i];
@@ -128,6 +151,7 @@ export default function AxOverview() {
                   );
                 })}
               </div>
+              )}
               {idx === 0 && focus && (
                 <button type="button" className="btn small ghost noprint" style={{ marginTop: 10 }} onClick={() => setFocus(null)}>
                   모든 문항 보기

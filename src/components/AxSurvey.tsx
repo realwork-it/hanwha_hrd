@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AX_INTRO, AX_ITEMS, isAnswered, type AxAnswers } from "@/lib/ax";
+import { AX_INTRO, AX_REQUIRED_ITEMS, isAnswered, type AxAnswers } from "@/lib/ax";
 import AxQuestionList from "./AxQuestionList";
 import { COMPANIES, OTHER_COMPANY } from "@/lib/companies";
 
@@ -72,15 +72,15 @@ export default function AxSurvey() {
   }, [hydrated, done, companySel, companyText, name, answers]);
 
   const company = (companySel === OTHER_COMPANY ? companyText : companySel).trim();
-  const answered = AX_ITEMS.filter((it) => isAnswered(it, answers[it.id])).length;
-  const total = AX_ITEMS.length;
+  const answered = AX_REQUIRED_ITEMS.filter((it) => isAnswered(it, answers[it.id])).length;
+  const total = AX_REQUIRED_ITEMS.length;
   const ready = answered === total && company.length > 0;
-  const missing = showMissing ? new Set(AX_ITEMS.filter((it) => !isAnswered(it, answers[it.id])).map((it) => it.id)) : new Set<string>();
+  const missing = showMissing ? new Set(AX_REQUIRED_ITEMS.filter((it) => !isAnswered(it, answers[it.id])).map((it) => it.id)) : new Set<string>();
 
   async function submit() {
     if (!ready) {
       setShowMissing(true);
-      const first = AX_ITEMS.find((it) => !isAnswered(it, answers[it.id]))?.id;
+      const first = AX_REQUIRED_ITEMS.find((it) => !isAnswered(it, answers[it.id]))?.id;
       if (!company) document.getElementById("ax_company")?.scrollIntoView({ block: "center" });
       else if (first) document.getElementById(`ax_${first}`)?.scrollIntoView({ block: "center" });
       return;
@@ -176,7 +176,7 @@ export default function AxSurvey() {
         </div>
       </div>
 
-      <h2>여덟 문항</h2>
+      <h2>열 문항</h2>
       <p className="h2sub">
         {AX_INTRO} 느낌이 아니라 지금 보이고 들리는 장면에 가장 가까운 것을 고르세요. 모르면 모르겠다를 고르는 것도 답입니다.
       </p>

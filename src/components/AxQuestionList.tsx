@@ -1,7 +1,7 @@
 "use client";
 
 // AX 퀵 서베이 문항 목록. 단독 화면(/ax)과 준비도 체크의 파트 2에서 같이 쓴다.
-import { AX_ITEMS, type AxAnswers } from "@/lib/ax";
+import { AX_ITEMS, AX_TEXT_MAX, type AxAnswers } from "@/lib/ax";
 
 interface Props {
   answers: AxAnswers;
@@ -33,7 +33,25 @@ export default function AxQuestionList({ answers, onChange, missing }: Props) {
               </span>
               {it.t}
             </div>
-            {it.multi ? (
+            {it.kind === "text" ? (
+              <div className="opts">
+                <textarea
+                  className="axtext"
+                  name={`ax_${it.id}`}
+                  rows={3}
+                  maxLength={AX_TEXT_MAX}
+                  placeholder="예: 회의 자료 초안을 AI가 먼저 쓰고 사람이 고치는 순서가 됐다"
+                  value={typeof answers[it.id] === "string" ? (answers[it.id] as string) : ""}
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    onChange((a) => ({ ...a, [it.id]: v }));
+                  }}
+                />
+                <div className="hint" style={{ paddingLeft: 10 }}>
+                  비워 두어도 제출됩니다. {typeof answers[it.id] === "string" ? (answers[it.id] as string).length : 0} / {AX_TEXT_MAX}자
+                </div>
+              </div>
+            ) : it.multi ? (
               <div className="opts" role="group" aria-label={it.t}>
                 {it.o.map((o, i) => {
                   const cur = Array.isArray(answers[it.id]) ? (answers[it.id] as number[]) : [];

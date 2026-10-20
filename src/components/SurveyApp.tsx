@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { CONFIG, ITEM_IDS } from "@/lib/config";
 import { COMPANIES, OTHER_COMPANY } from "@/lib/companies";
 import type { Answers } from "@/lib/score";
-import { AX_INTRO, AX_ITEMS, isAnswered, type AxAnswers } from "@/lib/ax";
+import { AX_INTRO, AX_REQUIRED_ITEMS, isAnswered, type AxAnswers } from "@/lib/ax";
 import AxQuestionList from "./AxQuestionList";
 
 type Role = "staff" | "leader";
@@ -92,9 +92,9 @@ export default function SurveyApp({ role }: Props) {
 
   const company = (companySel === OTHER_COMPANY ? companyText : companySel).trim();
   const answered1 = ITEM_IDS.filter((id) => answers[id] != null).length;
-  const answered2 = AX_ITEMS.filter((it) => isAnswered(it, axAnswers[it.id])).length;
+  const answered2 = AX_REQUIRED_ITEMS.filter((it) => isAnswered(it, axAnswers[it.id])).length;
   const answered = answered1 + answered2;
-  const total = ITEM_IDS.length + AX_ITEMS.length;
+  const total = ITEM_IDS.length + AX_REQUIRED_ITEMS.length;
   const allAnswered = answered === total;
   const nameOk = role === "staff" || name.trim().length > 0;
   const ready = allAnswered && company.length > 0 && nameOk;
@@ -105,14 +105,14 @@ export default function SurveyApp({ role }: Props) {
   }, [showMissing, answers]);
   const missingAx = useMemo(() => {
     if (!showMissing) return new Set<string>();
-    return new Set(AX_ITEMS.filter((it) => !isAnswered(it, axAnswers[it.id])).map((it) => it.id));
+    return new Set(AX_REQUIRED_ITEMS.filter((it) => !isAnswered(it, axAnswers[it.id])).map((it) => it.id));
   }, [showMissing, axAnswers]);
 
   async function submit() {
     if (!ready) {
       setShowMissing(true);
       const first = ITEM_IDS.find((id) => answers[id] == null);
-      const firstAx = AX_ITEMS.find((it) => !isAnswered(it, axAnswers[it.id]))?.id;
+      const firstAx = AX_REQUIRED_ITEMS.find((it) => !isAnswered(it, axAnswers[it.id]))?.id;
       if (!company) {
         document.getElementById("company")?.scrollIntoView({ block: "center" });
       } else if (!nameOk) {
@@ -232,7 +232,7 @@ export default function SurveyApp({ role }: Props) {
         <div className="pl">
           <span>진행률</span>
           <span>
-            <b>{answered}</b> / {total} 문항
+            <b>{answered}</b> / {total} 문항 <small style={{ fontWeight: 400 }}>(주관식 제외)</small>
           </span>
         </div>
         <div className="ptrack">

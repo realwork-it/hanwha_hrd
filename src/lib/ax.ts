@@ -11,6 +11,8 @@ export interface AxItem {
   multi?: number;
   /** 단독 선택 보기의 번호. 이것을 고르면 다른 보기를 함께 고를 수 없다 */
   exclusive?: number;
+  /** scale은 5점 추이 문항(반복 비교용), text는 주관식(선택 입력). 없으면 장면 고르기 */
+  kind?: "scale" | "text";
 }
 
 export const AX_INTRO = "회사 전체 또는 당신이 가장 잘 아는 조직(본부나 사업부)을 떠올려, 최근 1년 안에 보고 들은 장면으로 답하세요.";
@@ -114,16 +116,35 @@ export const AX_ITEMS: readonly AxItem[] = [
       "아직 모르겠다, 오늘 토론에서 정하고 싶다",
     ],
   },
+  {
+    id: "Q8",
+    cat: "추이 문항",
+    kind: "scale",
+    t: "우리 조직은 AI로 인한 일하는 방식의 변화에 잘 대응하고 있다.",
+    o: ["전혀 그렇지 않다", "그렇지 않다", "보통이다", "그렇다", "매우 그렇다"],
+  },
+  {
+    id: "Q9",
+    cat: "달라진 장면 하나",
+    kind: "text",
+    t: "AI 도입 뒤 우리 조직에서 가장 달라진 장면 하나를 적어 주세요. (선택 입력)",
+    o: [],
+  },
 ];
+
+/** 응답이 필요한 문항. 주관식은 비워도 제출된다 */
+export const AX_REQUIRED_ITEMS: readonly AxItem[] = AX_ITEMS.filter((i) => i.kind !== "text");
+/** 주관식 최대 글자 수 */
+export const AX_TEXT_MAX = 500;
 
 export const AX_ITEM_IDS: readonly string[] = AX_ITEMS.map((i) => i.id);
 
 /** 문항 id를 키로, 단일 선택은 보기 번호, 복수 선택은 보기 번호 배열을 저장한다. */
-export type AxAnswer = number | number[];
+export type AxAnswer = number | number[] | string;
 export type AxAnswers = Record<string, AxAnswer>;
 
 export const isAnswered = (it: AxItem, v: AxAnswer | undefined): boolean =>
-  it.multi ? Array.isArray(v) && v.length > 0 : typeof v === "number";
+  it.kind === "text" ? true : it.multi ? Array.isArray(v) && v.length > 0 : typeof v === "number";
 
 export function validateAxAnswers(input: unknown): AxAnswers | null {
   if (!input || typeof input !== "object") return null;
@@ -132,6 +153,14 @@ export function validateAxAnswers(input: unknown): AxAnswers | null {
   for (const it of AX_ITEMS) {
     const v = obj[it.id];
     const okIdx = (n: unknown): n is number => typeof n === "number" && Number.isInteger(n) && n >= 0 && n < it.o.length;
+    if (it.kind === "text") {
+      // 선택 입력. 비어 있으면 저장하지 않는다.
+      if (v === undefined || v === null || v === "") continue;
+      if (typeof v !== "string") return null;
+      const t = v.replace(/\s+/g, " ").trim().slice(0, AX_TEXT_MAX);
+      if (t) out[it.id] = t;
+      continue;
+    }
     if (it.multi) {
       if (!Array.isArray(v) || v.length === 0 || v.length > it.multi || !v.every(okIdx)) return null;
       const uniq = [...new Set(v as number[])].sort((a, b) => a - b);
