@@ -15,7 +15,7 @@ export interface AxItem {
   kind?: "scale" | "text";
 }
 
-export const AX_INTRO = "회사 전체 또는 당신이 가장 잘 아는 조직(본부나 사업부)을 떠올려, 최근 1년 안에 보고 들은 장면으로 답하세요.";
+export const AX_INTRO = "회사 전체 또는 당신이 가장 잘 아는 조직(본부나 사업부)을 떠올려, 최근 3개월 안에 보고 들은 장면으로 답하세요.";
 
 export const AX_ITEMS: readonly AxItem[] = [
   {
