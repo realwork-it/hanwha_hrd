@@ -81,7 +81,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
 
   if (activeTab === "ax") {
     return (
-      <Shell>
+      <Shell eyebrow="REALWORK | AX 퀵 서베이 | 진행자용" title="AX 퀵 서베이 결과">
         {tabs}
         <AxOverview />
         <form action={logout} style={{ marginTop: 16 }}>
@@ -190,13 +190,21 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
   );
 }
 
-function Shell({ children }: { children: React.ReactNode }) {
+function Shell({
+  children,
+  eyebrow = "REALWORK | 조직변화 준비도 체크 | 진행자용",
+  title = "응답 대시보드",
+}: {
+  children: React.ReactNode;
+  eyebrow?: string;
+  title?: string;
+}) {
   return (
     <>
       <div className="band compact">
         <div className="inner">
-          <p className="eyebrow">REALWORK | 조직변화 준비도 체크 | 진행자용</p>
-          <h1>응답 대시보드</h1>
+          <p className="eyebrow">{eyebrow}</p>
+          <h1>{title}</h1>
         </div>
       </div>
       <div className="wrap" style={{ paddingTop: 24 }}>

@@ -208,11 +208,12 @@ export default function AxSurvey() {
         {AX_ITEMS.map((it, idx) => (
           <section className="axis" key={it.id}>
             <div className={`q${missing.has(it.id) ? " missing" : ""}`} id={`ax_${it.id}`} style={{ borderTop: "none", paddingTop: 0 }}>
-              <div className="axhead" style={{ marginBottom: 6 }}>
-                <span className="axid">{idx === 0 ? "시작" : idx}</span>
-                <span className="axname">{it.cat}</span>
+              <div className="qt">
+                <span className="axid" style={{ fontSize: 15, marginRight: 8 }}>
+                  {idx + 1}
+                </span>
+                {it.t}
               </div>
-              <div className="qt">{it.t}</div>
               {it.multi ? (
                 <div className="opts" role="group" aria-label={it.t}>
                   {it.o.map((o, i) => {

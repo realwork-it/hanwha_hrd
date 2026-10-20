@@ -103,7 +103,7 @@ export default function AxOverview() {
           return (
             <div className="axcard" key={it.id}>
               <div className="axch">
-                <span className="axid">{n === 0 ? "시작" : n}</span>
+                <span className="axid">{n + 1}</span>
                 <span className="axname">{it.cat}</span>
               </div>
               <div className="axq">
@@ -143,7 +143,7 @@ export default function AxOverview() {
           <span>한 문항만 크게:</span>
           {AX_ITEMS.map((it, i) => (
             <button type="button" className="axpick" key={it.id} onClick={() => setFocus(it.id)}>
-              {i === 0 ? "시작" : i}
+              {i + 1}
             </button>
           ))}
         </div>
