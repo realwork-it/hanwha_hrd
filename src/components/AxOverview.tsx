@@ -70,7 +70,7 @@ export default function AxOverview() {
     <div className={`overview axov${board ? " board" : ""}`}>
       <div className="ovhead">
         <div>
-          <div className="ovtitle">AX 퀵 서베이, 참가 조직의 답</div>
+          <div className="ovtitle">조직 AX 현황 분석 결과</div>
           <div className="ovsub">
             문항마다 보기별 응답 수와 비율입니다. 계열사 이름은 집계에만 쓰고 화면에는 내지 않습니다.
             {updated && (

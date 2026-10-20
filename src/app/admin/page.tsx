@@ -74,14 +74,14 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
         응답 분포
       </Link>
       <Link href="/admin?tab=ax" className={activeTab === "ax" ? "on" : ""} aria-current={activeTab === "ax" ? "page" : undefined}>
-        AX 퀵 서베이
+        조직 AX 현황
       </Link>
     </nav>
   );
 
   if (activeTab === "ax") {
     return (
-      <Shell eyebrow="REALWORK | AX 퀵 서베이 | 진행자용" title="AX 퀵 서베이 결과">
+      <Shell eyebrow="REALWORK | 조직 AX 현황 | 진행자용" title="조직 AX 현황">
         {tabs}
         <AxOverview />
         <form action={logout} style={{ marginTop: 16 }}>
