@@ -348,10 +348,13 @@ h2 .part { display: inline-block; font-size: 12px; font-weight: 700; letter-spac
 /* AX 퀵 서베이 집계 */
 .axgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; margin-top: 6px; }
 .axcard { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; background: var(--sheet); min-width: 0; }
-.axch { display: flex; gap: 8px; align-items: baseline; margin-bottom: 2px; }
+.axch { display: flex; gap: 10px; align-items: baseline; margin-bottom: 8px; }
+.axqt { font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.4; }
+.axcat { text-align: right; font-size: 13px; font-weight: 700; color: var(--sub); margin-top: 12px; }
 .axch .axid { font-size: 15px; }
 .axch .axname { font-size: 13.5px; }
 .axq { font-size: 13px; color: var(--sub); margin-bottom: 10px; }
+.axq:empty { display: none; }
 .axmulti { display: block; font-size: 11.5px; color: var(--accent-text); margin-top: 2px; }
 .opts label.dim { opacity: .5; }
 .axbars { display: flex; flex-direction: column; gap: 7px; }
@@ -375,10 +378,13 @@ h2 .part { display: inline-block; font-size: 12px; font-weight: 700; letter-spac
 .overview.board.axov .axq { font-size: 15px; }
 .overview.board.axov .axrow { font-size: 15px; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) 72px; }
 .overview.board.axov .axtrack { height: 16px; }
-.overview.board.axov .axch .axname { font-size: 16px; }
+.overview.board.axov .axqt { font-size: 18px; }
+.overview.board.axov .axcat { font-size: 15px; }
 /* 한 문항만 크게 볼 때 */
 .overview.board.axov .axgrid:has(> .axcard:only-child) { grid-template-columns: minmax(0, 900px); justify-content: center; }
-.overview.board.axov .axgrid > .axcard:only-child .axq { font-size: 22px; color: var(--ink); margin: 6px 0 18px; }
+.overview.board.axov .axgrid > .axcard:only-child .axqt { font-size: 24px; }
+.overview.board.axov .axgrid > .axcard:only-child .axq { font-size: 15px; margin: 0 0 16px; }
+.overview.board.axov .axgrid > .axcard:only-child .axcat { font-size: 18px; }
 .overview.board.axov .axgrid > .axcard:only-child .axrow { font-size: 20px; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) 100px; gap: 14px; }
 .overview.board.axov .axgrid > .axcard:only-child .axtrack { height: 26px; }
 .overview.board.axov .axgrid > .axcard:only-child .axbars { gap: 14px; }

@@ -104,10 +104,9 @@ export default function AxOverview() {
             <div className="axcard" key={it.id}>
               <div className="axch">
                 <span className="axid">{n + 1}</span>
-                <span className="axname">{it.cat}</span>
+                <span className="axqt">{it.t}</span>
               </div>
               <div className="axq">
-                {it.t}
                 {it.multi && <span className="axmulti"> 복수 응답, 최대 {it.multi}개. 비율은 응답자 수 기준</span>}
                 {it.kind === "scale" && (
                   <span className="axmulti">
@@ -152,6 +151,7 @@ export default function AxOverview() {
                 })}
               </div>
               )}
+              <div className="axcat">{it.cat}</div>
               {idx === 0 && focus && (
                 <button type="button" className="btn small ghost noprint" style={{ marginTop: 10 }} onClick={() => setFocus(null)}>
                   모든 문항 보기

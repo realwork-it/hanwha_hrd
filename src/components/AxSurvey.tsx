@@ -176,7 +176,7 @@ export default function AxSurvey() {
         </div>
       </div>
 
-      <h2>열 문항</h2>
+      <h2>아홉 문항</h2>
       <p className="h2sub">
         {AX_INTRO} 느낌이 아니라 지금 보이고 들리는 장면에 가장 가까운 것을 고르세요. 모르면 모르겠다를 고르는 것도 답입니다.
       </p>
