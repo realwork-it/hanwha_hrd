@@ -12,12 +12,38 @@ export default function CopyLink() {
   const [state, setState] = useState<"idle" | "done" | "fail">("idle");
 
   async function copy() {
+    let ok = false;
     try {
       await navigator.clipboard.writeText(url);
-      setState("done");
+      ok = true;
     } catch {
-      setState("fail");
+      // 클립보드 API가 막힌 환경(일부 인앱 브라우저, 포커스 없는 창)에서는 옛 방식으로 한 번 더 시도한다.
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = url;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+      } catch {
+        ok = false;
+      }
     }
+    if (!ok) {
+      // 복사가 안 되면 주소를 선택해 두어 길게 눌러 복사할 수 있게 한다.
+      const el = document.querySelector(".linkbox .lu");
+      const sel = window.getSelection();
+      if (el && sel) {
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+    }
+    setState(ok ? "done" : "fail");
     setTimeout(() => setState("idle"), 2500);
   }
 
@@ -29,7 +55,7 @@ export default function CopyLink() {
       </div>
       <div style={{ display: "flex", gap: 8 }}>
         <button type="button" className="btn small" onClick={copy}>
-          {state === "done" ? "복사됨" : state === "fail" ? "주소창에서 복사하세요" : "링크 복사"}
+          {state === "done" ? "복사됨" : state === "fail" ? "선택된 주소를 길게 눌러 복사하세요" : "링크 복사"}
         </button>
         <button type="button" className="btn small ghost" onClick={() => window.print()}>
           인쇄 또는 PDF 저장

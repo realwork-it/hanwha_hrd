@@ -122,7 +122,7 @@ h2 .part { display: inline-block; font-size: 12px; font-weight: 700; letter-spac
 .linkbox { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
 .linkbox .lt { font-size: 13.5px; }
 .linkbox .lt b { display: block; font-size: 14px; }
-.linkbox .lu { font-size: 12px; color: var(--sub); word-break: break-all; }
+.linkbox .lu { font-size: 12px; color: var(--sub); word-break: break-all; user-select: all; -webkit-user-select: all; }
 .meta { font-size: 12.5px; color: var(--sub); margin-top: 14px; }
 .meta b { color: var(--ink); }
 
@@ -426,7 +426,10 @@ footer { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 14px;
   .band .inner { padding-block: 18px 14px; }
   .noprint { display: none !important; }
   .wrap { padding-bottom: 0; max-width: none; }
-  .rblock, .axis, .approach, .rx, .gapcard { break-inside: avoid; }
+  /* 블록은 쪽을 넘어가도 되고, 그 안의 그림과 카드 단위만 끊기지 않게 한다 */
+  .rblock { break-inside: auto; }
+  .rblock h3, .result-band, .cross-band { break-after: avoid; }
+  .axis, .approach, .rx, .gapcard, .model, .bars, .coord, .scorepair, .borderline, .size3, .cont, .honest, .twocol .col, .brow, .brow2 { break-inside: avoid; }
   .progress { position: static; }
   a { color: inherit; text-decoration: none; }
 }
