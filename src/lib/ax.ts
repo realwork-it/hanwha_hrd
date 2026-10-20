@@ -18,7 +18,7 @@ export const AX_INTRO = "회사 전체 또는 당신이 가장 잘 아는 조직
 export const AX_ITEMS: readonly AxItem[] = [
   {
     id: "Q0",
-    cat: "AI 활용이 퍼진 모습",
+    cat: "AI 활용의 현재 모습",
     t: "우리 조직에서 지금 AI 활용은 어떤 모습에 가장 가깝나?",
     o: [
       "회사가 도구와 규칙을 정해 주고 대부분이 쓴다",
