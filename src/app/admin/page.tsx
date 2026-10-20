@@ -71,10 +71,10 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
         제출 현황
       </Link>
       <Link href="/admin?tab=overview" className={activeTab === "overview" ? "on" : ""} aria-current={activeTab === "overview" ? "page" : undefined}>
-        응답 분포
+        변화 준비도 분석
       </Link>
       <Link href="/admin?tab=ax" className={activeTab === "ax" ? "on" : ""} aria-current={activeTab === "ax" ? "page" : undefined}>
-        조직 AX 현황
+        조직 AX 현황 분석
       </Link>
     </nav>
   );
