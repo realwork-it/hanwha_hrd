@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AX_INTRO, AX_ITEMS, isAnswered, type AxAnswers } from "@/lib/ax";
+import AxQuestionList from "./AxQuestionList";
 import { COMPANIES, OTHER_COMPANY } from "@/lib/companies";
 
 interface Draft {
@@ -76,18 +77,6 @@ export default function AxSurvey() {
   const ready = answered === total && company.length > 0;
   const missing = showMissing ? new Set(AX_ITEMS.filter((it) => !isAnswered(it, answers[it.id])).map((it) => it.id)) : new Set<string>();
 
-  // 복수 선택. 단독 보기를 고르면 나머지를 비우고, 최대 개수를 넘으면 더 고를 수 없다.
-  function toggleMulti(itemId: string, idx: number, max: number, exclusive: number | undefined) {
-    setAnswers((a) => {
-      const cur = Array.isArray(a[itemId]) ? (a[itemId] as number[]) : [];
-      if (cur.includes(idx)) return { ...a, [itemId]: cur.filter((n) => n !== idx) };
-      if (idx === exclusive) return { ...a, [itemId]: [idx] };
-      const base = exclusive != null ? cur.filter((n) => n !== exclusive) : cur;
-      if (base.length >= max) return a;
-      return { ...a, [itemId]: [...base, idx].sort((x, y) => x - y) };
-    });
-  }
-
   async function submit() {
     if (!ready) {
       setShowMissing(true);
@@ -123,7 +112,7 @@ export default function AxSurvey() {
       <div className="start" style={{ marginTop: 26 }}>
         <h2 style={{ margin: "0 0 8px", fontSize: 20 }}>응답이 저장되었습니다</h2>
         <p style={{ margin: 0 }}>
-          고맙습니다. 전체 결과는 진행자가 화면에 띄워 함께 봅니다. 개인 응답과 계열사 이름은 화면에 나오지 않습니다.
+          고맙습니다. 전체 결과는 다음 세션에서 함께 봅니다. 개인 응답과 계열사 이름은 화면에 나오지 않습니다.
         </p>
       </div>
     );
@@ -204,61 +193,7 @@ export default function AxSurvey() {
         </div>
       </div>
 
-      <div style={{ marginTop: 14 }}>
-        {AX_ITEMS.map((it, idx) => (
-          <section className="axis" key={it.id}>
-            <div className={`q${missing.has(it.id) ? " missing" : ""}`} id={`ax_${it.id}`} style={{ borderTop: "none", paddingTop: 0 }}>
-              <div className="qt">
-                <span className="axid" style={{ fontSize: 15, marginRight: 8 }}>
-                  {idx + 1}
-                </span>
-                {it.t}
-              </div>
-              {it.multi ? (
-                <div className="opts" role="group" aria-label={it.t}>
-                  {it.o.map((o, i) => {
-                    const cur = Array.isArray(answers[it.id]) ? (answers[it.id] as number[]) : [];
-                    const checked = cur.includes(i);
-                    const full = cur.length >= (it.multi ?? 1) && !checked;
-                    const lockedByExclusive = it.exclusive != null && cur.includes(it.exclusive) && i !== it.exclusive;
-                    return (
-                      <label key={i} className={full || lockedByExclusive ? "dim" : ""}>
-                        <input
-                          type="checkbox"
-                          name={`ax_${it.id}`}
-                          value={i}
-                          checked={checked}
-                          disabled={lockedByExclusive}
-                          onChange={() => toggleMulti(it.id, i, it.multi ?? 1, it.exclusive)}
-                        />
-                        <span>{o}</span>
-                      </label>
-                    );
-                  })}
-                  <div className="hint" style={{ paddingLeft: 10 }}>
-                    {(Array.isArray(answers[it.id]) ? (answers[it.id] as number[]).length : 0)} / {it.multi}개 선택
-                  </div>
-                </div>
-              ) : (
-                <div className="opts" role="radiogroup" aria-label={it.t}>
-                  {it.o.map((o, i) => (
-                    <label key={i}>
-                      <input
-                        type="radio"
-                        name={`ax_${it.id}`}
-                        value={i}
-                        checked={answers[it.id] === i}
-                        onChange={() => setAnswers((a) => ({ ...a, [it.id]: i }))}
-                      />
-                      <span>{o}</span>
-                    </label>
-                  ))}
-                </div>
-              )}
-            </div>
-          </section>
-        ))}
-      </div>
+      <AxQuestionList answers={answers} onChange={setAnswers} missing={missing} />
 
       <div className="submitbar">
         {error && (

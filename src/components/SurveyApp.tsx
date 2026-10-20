@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { CONFIG, ITEM_IDS } from "@/lib/config";
 import { COMPANIES, OTHER_COMPANY } from "@/lib/companies";
 import type { Answers } from "@/lib/score";
+import { AX_INTRO, AX_ITEMS, isAnswered, type AxAnswers } from "@/lib/ax";
+import AxQuestionList from "./AxQuestionList";
 
 type Role = "staff" | "leader";
 
@@ -17,6 +19,7 @@ interface Draft {
   companyText: string;
   name: string;
   answers: Answers;
+  axAnswers?: AxAnswers;
 }
 
 const draftKey = (role: Role) => `odr_draft_${role}`;
@@ -51,6 +54,8 @@ export default function SurveyApp({ role }: Props) {
   const [companyText, setCompanyText] = useState("");
   const [name, setName] = useState("");
   const [answers, setAnswers] = useState<Answers>({});
+  // 파트 2. AX 퀵 서베이. 준비도와 함께 묻고 따로 저장한다.
+  const [axAnswers, setAxAnswers] = useState<AxAnswers>({});
   const [hydrated, setHydrated] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -71,6 +76,7 @@ export default function SurveyApp({ role }: Props) {
       setCompanyText(draft.companyText ?? "");
       setName(draft.name ?? "");
       setAnswers(draft.answers ?? {});
+      setAxAnswers(draft.axAnswers ?? {});
       // 비제어 입력란에는 값을 직접 넣는다. 직접 입력란은 복원된 상태로 마운트되므로 defaultValue가 처리한다.
       if (nameRef.current) nameRef.current.value = draft.name ?? "";
     }
@@ -81,12 +87,14 @@ export default function SurveyApp({ role }: Props) {
   // 입력이 바뀔 때마다 초안을 보관한다. 새로고침해도 응답이 남는다.
   useEffect(() => {
     if (!hydrated) return;
-    saveJSON(draftKey(role), { companySel, companyText, name, answers } satisfies Draft);
-  }, [hydrated, role, companySel, companyText, name, answers]);
+    saveJSON(draftKey(role), { companySel, companyText, name, answers, axAnswers } satisfies Draft);
+  }, [hydrated, role, companySel, companyText, name, answers, axAnswers]);
 
   const company = (companySel === OTHER_COMPANY ? companyText : companySel).trim();
-  const answered = ITEM_IDS.filter((id) => answers[id] != null).length;
-  const total = ITEM_IDS.length;
+  const answered1 = ITEM_IDS.filter((id) => answers[id] != null).length;
+  const answered2 = AX_ITEMS.filter((it) => isAnswered(it, axAnswers[it.id])).length;
+  const answered = answered1 + answered2;
+  const total = ITEM_IDS.length + AX_ITEMS.length;
   const allAnswered = answered === total;
   const nameOk = role === "staff" || name.trim().length > 0;
   const ready = allAnswered && company.length > 0 && nameOk;
@@ -95,23 +103,30 @@ export default function SurveyApp({ role }: Props) {
     if (!showMissing) return new Set<string>();
     return new Set(ITEM_IDS.filter((id) => answers[id] == null));
   }, [showMissing, answers]);
+  const missingAx = useMemo(() => {
+    if (!showMissing) return new Set<string>();
+    return new Set(AX_ITEMS.filter((it) => !isAnswered(it, axAnswers[it.id])).map((it) => it.id));
+  }, [showMissing, axAnswers]);
 
   async function submit() {
     if (!ready) {
       setShowMissing(true);
       const first = ITEM_IDS.find((id) => answers[id] == null);
+      const firstAx = AX_ITEMS.find((it) => !isAnswered(it, axAnswers[it.id]))?.id;
       if (!company) {
         document.getElementById("company")?.scrollIntoView({ block: "center" });
       } else if (!nameOk) {
         document.getElementById("name")?.scrollIntoView({ block: "center" });
       } else if (first) {
         document.getElementById(`q_${first}`)?.scrollIntoView({ block: "center" });
+      } else if (firstAx) {
+        document.getElementById(`ax_${firstAx}`)?.scrollIntoView({ block: "center" });
       }
       return;
     }
     setSubmitting(true);
     setError(null);
-    const payload = { role, company, name: name.trim() || null, answers };
+    const payload = { role, company, name: name.trim() || null, answers, ax: axAnswers };
     try {
       const res = await fetch("/api/submit", {
         method: "POST",
@@ -125,7 +140,7 @@ export default function SurveyApp({ role }: Props) {
       router.push(`/r/${data.token}`);
     } catch (e) {
       // 와이파이가 끊겨도 응답이 날아가지 않도록 보관하고 재시도 버튼을 보여 준다.
-      saveJSON(pendingKey(role), { companySel, companyText, name, answers } satisfies Draft);
+      saveJSON(pendingKey(role), { companySel, companyText, name, answers, axAnswers } satisfies Draft);
       setHasPending(true);
       setError(e instanceof Error ? e.message : "알 수 없는 오류");
       setSubmitting(false);
@@ -208,7 +223,9 @@ export default function SurveyApp({ role }: Props) {
         </div>
       </div>
 
-      <h2>진단지</h2>
+      <h2>
+        <span className="part">파트 1</span>변화 준비도
+      </h2>
       <p className="h2sub">모든 문항은 느낌이 아니라 장면을 묻습니다. 가장 가까운 것 하나를 고르세요.</p>
 
       <div className="progress" role="status" aria-live="polite">
@@ -256,6 +273,14 @@ export default function SurveyApp({ role }: Props) {
         ))}
       </div>
 
+      <h2>
+        <span className="part">파트 2</span>AX와 일하는 방식
+      </h2>
+      <p className="h2sub">
+        {AX_INTRO} 느낌이 아니라 지금 보이고 들리는 장면에 가장 가까운 것을 고르세요. 모르면 모르겠다를 고르는 것도 답입니다.
+      </p>
+      <AxQuestionList answers={axAnswers} onChange={setAxAnswers} missing={missingAx} />
+
       <div className="submitbar">
         {hasPending && !error && (
           <div className="alert info">
@@ -269,7 +294,7 @@ export default function SurveyApp({ role }: Props) {
         )}
         <div className="st">
           {allAnswered
-            ? "15문항에 모두 응답했습니다."
+            ? `${total}문항에 모두 응답했습니다.`
             : `아직 ${total - answered}문항이 남았습니다. 모든 문항에 응답해야 제출할 수 있습니다.`}
           {!company && " 상단에서 계열사를 골라 주세요."}
           {company && !nameOk && " 상단에 이름이나 소속을 적어 주세요."}

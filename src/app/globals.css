@@ -66,6 +66,7 @@ h1 { font-weight: 700; font-size: clamp(28px, 5vw, 42px); margin: 0 0 14px; colo
 .notice { background: var(--pale); border: 1px solid var(--paleline); border-radius: 8px; padding: 12px 16px; font-size: 13.5px; margin-top: 26px; }
 .notice b { color: var(--accent); }
 h2 { font-weight: 700; font-size: 22px; margin: 52px 0 6px; text-wrap: balance; }
+h2 .part { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .08em; color: var(--accent); background: var(--pale); border-radius: 999px; padding: 2px 10px; margin-right: 10px; vertical-align: 3px; }
 .h2sub { color: var(--sub); margin: 0 0 20px; max-width: 70ch; }
 
 /* 시작 화면 */
