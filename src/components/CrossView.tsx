@@ -99,7 +99,7 @@ export default function CrossView({ leader, staff, staffLabel, staffOptions, cur
                     <Badge v={leader.mo} />
                   </div>
                   <div className="sv" style={{ fontSize: 18 }}>
-                    <span style={{ color: "var(--accent)" }}>담당자 {f1(staff.mo)}</span>
+                    <span style={{ color: "var(--accent-text)" }}>담당자 {f1(staff.mo)}</span>
                     <Badge v={staff.mo} />
                   </div>
                 </div>
@@ -110,7 +110,7 @@ export default function CrossView({ leader, staff, staffLabel, staffOptions, cur
                     <Badge v={leader.ca} />
                   </div>
                   <div className="sv" style={{ fontSize: 18 }}>
-                    <span style={{ color: "var(--accent)" }}>담당자 {f1(staff.ca)}</span>
+                    <span style={{ color: "var(--accent-text)" }}>담당자 {f1(staff.ca)}</span>
                     <Badge v={staff.ca} />
                   </div>
                 </div>
