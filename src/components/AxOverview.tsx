@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { AX_ITEMS } from "@/lib/ax";
+import { AX_THEMES, AX_THEMES_META } from "@/lib/ax-themes";
 import type { AxCounts } from "@/app/admin/ax-data/route";
 
 const REFRESH_MS = 30_000;
@@ -120,17 +121,40 @@ export default function AxOverview() {
                     / 5
                   </span>
                 )}
-                {it.kind === "text" && (
-                  <span className="axmulti"> 주관식. 순서를 섞어 보여 줍니다</span>
-                )}
+                {it.kind === "text" && <span className="axmulti"> 주관식. {AX_THEMES_META.basedOn} 기준으로 묶음</span>}
               </div>
               {it.kind === "text" ? (
-                <ul className="axtexts">
-                  {(data?.texts.find((x) => x.id === it.id)?.answers ?? []).map((t, i) => (
-                    <li key={i}>{t}</li>
-                  ))}
-                  {(data?.texts.find((x) => x.id === it.id)?.answers.length ?? 0) === 0 && <li className="none">아직 적힌 내용이 없습니다.</li>}
-                </ul>
+                <div className="axthemes">
+                  {it.id === AX_THEMES_META.itemId && (
+                    <>
+                      <div className="axthnote">{AX_THEMES_META.note}</div>
+                      {AX_THEMES.map((th) => (
+                        <div className="axtheme" key={th.title}>
+                          <div className="axthh">
+                            <span className="axtht">{th.title}</span>
+                            <span className="axthn">{th.count}건</span>
+                          </div>
+                          <div className="axthd">{th.desc}</div>
+                          <ul className="axthq">
+                            {th.quotes.map((q) => (
+                              <li key={q}>{q}</li>
+                            ))}
+                          </ul>
+                          <div className="axthc">{th.cat}</div>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                  <details className="axraw noprint">
+                    <summary>원문 전체 보기 ({data?.texts.find((x) => x.id === it.id)?.answers.length ?? 0}건, 순서 섞음)</summary>
+                    <ul className="axtexts">
+                      {(data?.texts.find((x) => x.id === it.id)?.answers ?? []).map((t, i) => (
+                        <li key={i}>{t}</li>
+                      ))}
+                      {(data?.texts.find((x) => x.id === it.id)?.answers.length ?? 0) === 0 && <li className="none">아직 적힌 내용이 없습니다.</li>}
+                    </ul>
+                  </details>
+                </div>
               ) : (
               <div className="axbars">
                 {it.o.map((o, i) => {
