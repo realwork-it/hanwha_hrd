@@ -187,7 +187,6 @@ export default function AxOverview({ role }: { role: AxRole }) {
                 })}
               </div>
               )}
-              <div className="axcat">{it.cat}</div>
               {idx === 0 && focus && (
                 <div className="axnav noprint">
                   <button type="button" className="btn small ghost" disabled={focusIdx <= 0} onClick={() => setFocus(AX_ITEMS[focusIdx - 1].id)}>
@@ -201,6 +200,7 @@ export default function AxOverview({ role }: { role: AxRole }) {
                   </button>
                 </div>
               )}
+              <div className="axcat">{it.cat}</div>
             </div>
           );
         })}
