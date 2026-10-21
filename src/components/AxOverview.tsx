@@ -187,20 +187,22 @@ export default function AxOverview({ role }: { role: AxRole }) {
                 })}
               </div>
               )}
-              {idx === 0 && focus && (
-                <div className="axnav noprint">
-                  <button type="button" className="btn small ghost" disabled={focusIdx <= 0} onClick={() => setFocus(AX_ITEMS[focusIdx - 1].id)}>
-                    이전 문항
-                  </button>
-                  <button type="button" className="btn small ghost" onClick={() => setFocus(null)}>
-                    모든 문항 보기
-                  </button>
-                  <button type="button" className="btn small" disabled={focusIdx >= AX_ITEMS.length - 1} onClick={() => setFocus(AX_ITEMS[focusIdx + 1].id)}>
-                    다음 문항
-                  </button>
-                </div>
-              )}
-              <div className="axcat">{it.cat}</div>
+              <div className="axfoot">
+                {idx === 0 && focus && (
+                  <div className="axnav noprint">
+                    <button type="button" className="btn small ghost" disabled={focusIdx <= 0} onClick={() => setFocus(AX_ITEMS[focusIdx - 1].id)}>
+                      이전 문항
+                    </button>
+                    <button type="button" className="btn small ghost" onClick={() => setFocus(null)}>
+                      모든 문항 보기
+                    </button>
+                    <button type="button" className="btn small" disabled={focusIdx >= AX_ITEMS.length - 1} onClick={() => setFocus(AX_ITEMS[focusIdx + 1].id)}>
+                      다음 문항
+                    </button>
+                  </div>
+                )}
+                <div className="axcat">{it.cat}</div>
+              </div>
             </div>
           );
         })}
