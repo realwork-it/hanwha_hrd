@@ -25,7 +25,7 @@ const fmt = new Intl.DateTimeFormat("ko-KR", {
 
 export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
   const { error, tab } = await searchParams;
-  const activeTab = tab === "overview" ? "overview" : tab === "ax" ? "ax" : "status";
+  const activeTab = tab === "overview" ? "overview" : tab === "ax" ? "ax" : tab === "ax-leader" ? "ax-leader" : "status";
   const authed = await isAuthed();
 
   if (!authed) {
@@ -74,16 +74,19 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
         변화 준비도 분석
       </Link>
       <Link href="/admin?tab=ax" className={activeTab === "ax" ? "on" : ""} aria-current={activeTab === "ax" ? "page" : undefined}>
-        조직 AX 현황 분석
+        조직 AX 현황 분석 (담당자)
+      </Link>
+      <Link href="/admin?tab=ax-leader" className={activeTab === "ax-leader" ? "on" : ""} aria-current={activeTab === "ax-leader" ? "page" : undefined}>
+        조직 AX 현황 분석 (팀장)
       </Link>
     </nav>
   );
 
-  if (activeTab === "ax") {
+  if (activeTab === "ax" || activeTab === "ax-leader") {
     return (
       <Shell eyebrow="REALWORK | 조직 AX 현황 | 진행자용" title="조직 AX 현황">
         {tabs}
-        <AxOverview />
+        <AxOverview role={activeTab === "ax" ? "staff" : "leader"} />
         <form action={logout} style={{ marginTop: 16 }}>
           <button type="submit" className="btn small ghost">
             로그아웃

@@ -24,6 +24,8 @@ export interface AxRow {
   name: string | null;
   answers: AxAnswers;
   created_at: string;
+  /** 담당자/팀장 구분. 열을 추가하기 전에 들어온 행은 null이며 담당자로 본다 */
+  role?: "staff" | "leader" | null;
 }
 
 export type ResponseSummary = Omit<ResponseRow, "answers">;
@@ -94,17 +96,31 @@ function supabaseStore(client: SupabaseClient): Store {
       return (data as ResponseRow[]) ?? [];
     },
     async insertAx(row) {
-      const { data, error } = await client.from("ax_responses").insert(row).select("id, company, name, answers, created_at").single();
+      let { data, error } = await client.from("ax_responses").insert(row).select("id, company, name, answers, created_at").single();
+      if (error && /role/i.test(error.message)) {
+        // role 열이 아직 없는 DB. 역할 없이 저장한다.
+        const { role: _r, ...noRole } = row;
+        void _r;
+        ({ data, error } = await client.from("ax_responses").insert(noRole).select("id, company, name, answers, created_at").single());
+      }
       if (error) throw new Error(`insertAx failed: ${error.message}`);
       return data as AxRow;
     },
     async listAx() {
-      const { data, error } = await client
+      const withRole = await client
         .from("ax_responses")
-        .select("id, company, name, answers, created_at")
+        .select("id, company, name, answers, created_at, role")
         .order("created_at", { ascending: false });
+      let rows: unknown = withRole.data;
+      let error = withRole.error;
+      if (error && /role/i.test(error.message)) {
+        // role 열이 아직 없는 DB. 역할 없이 읽는다.
+        const noRole = await client.from("ax_responses").select("id, company, name, answers, created_at").order("created_at", { ascending: false });
+        rows = noRole.data;
+        error = noRole.error;
+      }
       if (error) throw new Error(`listAx failed: ${error.message}`);
-      return (data as AxRow[]) ?? [];
+      return (rows as AxRow[] | null) ?? [];
     },
   };
 }

@@ -7,7 +7,10 @@ import type { AxCounts } from "@/app/admin/ax-data/route";
 
 const REFRESH_MS = 30_000;
 
-export default function AxOverview() {
+export type AxRole = "staff" | "leader";
+const ROLE_LABEL: Record<AxRole, string> = { staff: "담당자", leader: "팀장" };
+
+export default function AxOverview({ role }: { role: AxRole }) {
   const [data, setData] = useState<AxCounts | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [board, setBoard] = useState(false);
@@ -15,14 +18,14 @@ export default function AxOverview() {
 
   const load = useCallback(async () => {
     try {
-      const res = await fetch("/admin/ax-data", { cache: "no-store" });
+      const res = await fetch(`/admin/ax-data?role=${role}`, { cache: "no-store" });
       if (!res.ok) throw new Error(`서버 응답 ${res.status}`);
       setData((await res.json()) as AxCounts);
       setError(null);
     } catch (e) {
       setError(e instanceof Error ? e.message : "불러오기 실패");
     }
-  }, []);
+  }, [role]);
 
   useEffect(() => {
     const first = setTimeout(load, 0);
@@ -35,7 +38,11 @@ export default function AxOverview() {
 
   useEffect(() => {
     if (!board) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setBoard(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setBoard(false);
+      if (e.key === "ArrowRight") setFocus((f) => (f ? AX_ITEMS[Math.min(AX_ITEMS.length - 1, AX_ITEMS.findIndex((i) => i.id === f) + 1)].id : AX_ITEMS[0].id));
+      if (e.key === "ArrowLeft") setFocus((f) => (f ? AX_ITEMS[Math.max(0, AX_ITEMS.findIndex((i) => i.id === f) - 1)].id : f));
+    };
     window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
     return () => {
@@ -66,17 +73,19 @@ export default function AxOverview() {
     ? new Date(data.updatedAt).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false })
     : "";
   const shown = focus ? AX_ITEMS.filter((i) => i.id === focus) : AX_ITEMS;
+  const focusIdx = focus ? AX_ITEMS.findIndex((i) => i.id === focus) : -1;
+  const showThemes = role === "staff";
 
   return (
     <div className={`overview axov${board ? " board" : ""}`}>
       <div className="ovhead">
         <div>
-          <div className="ovtitle">조직 AX 현황 분석 결과</div>
+          <div className="ovtitle">조직 AX 현황 분석 결과 ({ROLE_LABEL[role]})</div>
           <div className="ovsub">
-            문항마다 보기별 응답 수와 비율입니다. 계열사 이름은 집계에만 쓰고 화면에는 내지 않습니다.
+            {ROLE_LABEL[role]} 응답만 모은 집계입니다. 문항마다 보기별 응답 수와 비율이며, 계열사 이름은 집계에만 쓰고 화면에는 내지 않습니다.
             {updated && (
               <span className="upd">
-                응답 {total}건, 계열사 {data?.companies ?? 0}곳. 마지막 갱신 {updated}, 30초마다 자동 갱신.
+                {ROLE_LABEL[role]} 응답 {total}건, 계열사 {data?.companies ?? 0}곳. 마지막 갱신 {updated}, 30초마다 자동 갱신.
               </span>
             )}
           </div>
@@ -121,11 +130,14 @@ export default function AxOverview() {
                     / 5
                   </span>
                 )}
-                {it.kind === "text" && <span className="axmulti"> 주관식. {AX_THEMES_META.basedOn} 기준으로 묶음</span>}
+                {it.kind === "text" && (
+                  <span className="axmulti"> 주관식. {showThemes ? `${AX_THEMES_META.basedOn} 기준으로 묶음` : "순서를 섞어 보여 줍니다"}</span>
+                )}
               </div>
               {it.kind === "text" ? (
                 <div className="axthemes">
-                  {it.id === AX_THEMES_META.itemId && (
+                  {!showThemes && <div className="axthnote">팀장 주관식은 세션 뒤에 주제로 묶어 정리합니다. 원문은 아래에서 펼쳐 봅니다.</div>}
+                  {showThemes && it.id === AX_THEMES_META.itemId && (
                     <>
                       <div className="axthnote">{AX_THEMES_META.note}</div>
                       {AX_THEMES.map((th) => (
@@ -177,25 +189,38 @@ export default function AxOverview() {
               )}
               <div className="axcat">{it.cat}</div>
               {idx === 0 && focus && (
-                <button type="button" className="btn small ghost noprint" style={{ marginTop: 10 }} onClick={() => setFocus(null)}>
-                  모든 문항 보기
-                </button>
+                <div className="axnav noprint">
+                  <button type="button" className="btn small ghost" disabled={focusIdx <= 0} onClick={() => setFocus(AX_ITEMS[focusIdx - 1].id)}>
+                    이전 문항
+                  </button>
+                  <button type="button" className="btn small ghost" onClick={() => setFocus(null)}>
+                    모든 문항 보기
+                  </button>
+                  <button type="button" className="btn small" disabled={focusIdx >= AX_ITEMS.length - 1} onClick={() => setFocus(AX_ITEMS[focusIdx + 1].id)}>
+                    다음 문항
+                  </button>
+                </div>
               )}
             </div>
           );
         })}
       </div>
 
-      {!focus && (
-        <div className="ovfoot noprint">
-          <span>한 문항만 크게:</span>
-          {AX_ITEMS.map((it, i) => (
-            <button type="button" className="axpick" key={it.id} onClick={() => setFocus(it.id)}>
-              {i + 1}
-            </button>
-          ))}
-        </div>
-      )}
+      <div className="ovfoot noprint">
+        <span>한 문항만 크게:</span>
+        {AX_ITEMS.map((it, i) => (
+          <button
+            type="button"
+            className={`axpick${it.id === focus ? " on" : ""}`}
+            key={it.id}
+            aria-pressed={it.id === focus}
+            onClick={() => setFocus(it.id === focus ? null : it.id)}
+          >
+            {i + 1}
+          </button>
+        ))}
+        {focus && <span className="axhint">좌우 방향키로도 넘길 수 있습니다</span>}
+      </div>
     </div>
   );
 }

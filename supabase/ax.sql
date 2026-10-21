@@ -6,8 +6,13 @@ create table if not exists public.ax_responses (
   company     text not null,
   name        text,
   answers     jsonb not null,
-  created_at  timestamptz not null default now()
+  created_at  timestamptz not null default now(),
+  role        text
 );
+
+-- 2026-10-21 추가: 담당자/팀장 구분. 이미 만든 테이블에는 아래를 실행한다.
+-- alter table public.ax_responses add column if not exists role text;
+-- update public.ax_responses set role = 'staff' where role is null;
 
 create index if not exists ax_responses_created_idx on public.ax_responses (created_at desc);
 

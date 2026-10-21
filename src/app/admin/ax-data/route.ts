@@ -16,9 +16,11 @@ export interface AxCounts {
 }
 
 // 대시보드 AX 탭이 30초마다 부르는 집계. 개인 응답은 내보내지 않고 보기별 수만 준다.
-export async function GET() {
+export async function GET(req: Request) {
   if (!(await isAuthed())) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  const rows = await db().listAx();
+  // role=leader면 팀장 응답만, 그 밖에는 담당자 응답만(역할이 비어 있는 옛 행 포함).
+  const role = new URL(req.url).searchParams.get("role") === "leader" ? "leader" : "staff";
+  const rows = (await db().listAx()).filter((r) => (role === "leader" ? r.role === "leader" : r.role !== "leader"));
   const shuffle = <T,>(arr: T[]): T[] => {
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {

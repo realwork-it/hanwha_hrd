@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     const row = await db().insert({ role, company, name: name || null, answers });
     if (ax) {
       try {
-        await db().insertAx({ company, name: name || null, answers: ax });
+        await db().insertAx({ company, name: name || null, answers: ax, role });
       } catch (e) {
         // 파트 1은 저장됐으므로 결과지는 연다. 파트 2 실패는 기록만 남긴다.
         console.error("[submit] ax insert failed", e);

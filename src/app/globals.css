@@ -389,6 +389,9 @@ h2 .part { display: inline-block; font-size: 12px; font-weight: 700; letter-spac
 .overview.board.axov .axthc { font-size: 13.5px; }
 .overview.board.axov .axgrid > .axcard:only-child .axtht { font-size: 22px; }
 .overview.board.axov .axgrid > .axcard:only-child .axthq, .overview.board.axov .axgrid > .axcard:only-child .axthd { font-size: 18px; }
+.axnav { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.axpick.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+.axhint { font-size: 12px; color: var(--sub); margin-left: 6px; }
 .axpick { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 6px; padding: 2px 9px; font-size: 12px; cursor: pointer; }
 .axpick:hover { border-color: var(--accent-text); color: var(--accent-text); }
 .overview.board.axov .axgrid { grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 14px; flex: 1 1 auto; min-height: 0; overflow: auto; align-content: start; }
