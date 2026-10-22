@@ -142,7 +142,13 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
 
   if (activeTab === "ax" || activeTab === "ax-leader") {
     return (
-      <Shell eyebrow="REALWORK | 조직 AX 현황 | 진행자용" title="조직 AX 현황">
+      <Shell
+        title={
+          activeTab === "ax"
+            ? "조직 AX 현황 분석 (담당자)"
+            : "조직 AX 현황 분석 (팀장)"
+        }
+      >
         {tabs}
         <div className={activeTab === "ax-leader" ? "theme-leader" : undefined}>
           <AxOverview role={activeTab === "ax" ? "staff" : "leader"} />
@@ -158,7 +164,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
 
   if (activeTab === "overview") {
     return (
-      <Shell>
+      <Shell title="변화 준비도 분석">
         {tabs}
         <Overview />
         <form action={logout} style={{ marginTop: 16 }}>
@@ -258,7 +264,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
 
 function Shell({
   children,
-  eyebrow = "REALWORK | 조직변화 준비도 체크 | 진행자용",
+  eyebrow = "REALWORK | 조직변화 준비도 체크 및 조직 AX 현황 | 응답 대시보드",
   title = "응답 대시보드",
 }: {
   children: React.ReactNode;
