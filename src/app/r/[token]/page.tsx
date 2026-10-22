@@ -60,7 +60,8 @@ export default async function ResultPage({ params, searchParams }: PageProps<"/r
       <div className="wrap">
         <CopyLink />
 
-        <ResultSheet scored={mine} />
+        {/* 팀장은 자기 결과를 3번까지만 보고 바로 교차 보기로 넘어간다 */}
+        <ResultSheet scored={mine} upto={row.role === "leader" ? 3 : 6} />
 
         {row.role === "leader" &&
           (staffRow ? (

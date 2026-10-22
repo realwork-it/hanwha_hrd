@@ -10,6 +10,8 @@ import { f1, pos, type Scored } from "@/lib/score";
 
 interface Props {
   scored: Scored;
+  /** 몇 번 블록까지 보여 줄지. 팀장 결과지는 3번까지만 두고 교차 보기로 넘어간다 */
+  upto?: number;
 }
 
 const forceNote = (f: string) =>
@@ -27,7 +29,7 @@ export function Badge({ v }: { v: number }) {
   );
 }
 
-export default function ResultSheet({ scored }: Props) {
+export default function ResultSheet({ scored, upto = 6 }: Props) {
   const { axes, mo, ca, quadrant, size, borderMo, borderCa, flagged } = scored;
   const CUT = CONFIG.CUT;
   const qd = CONFIG.quadrants[quadrant];
@@ -223,105 +225,109 @@ export default function ResultSheet({ scored }: Props) {
           </div>
         </div>
 
-        <div className="rblock">
-          <h3>
-            <span className="bn">4</span>지금 가능한 변화 유형
-          </h3>
-          <p className="bs">
-            변화를 원하는 힘과 해낼 힘의 수준을 바탕으로 지금 시도해 볼 만한
-            변화 유형을 보여 줍니다. 색이 칠해진 유형부터 검토해 보세요.
-          </p>
-          <div className="size3">
-            {SIZES.map((s, i) => {
-              // 큰 변화 상태인데 두 힘이 3.25에 못 미쳐 개편형까지만 열린 경우, 재설계형은 "다음 단계"로 표시한다
-              const next =
-                quadrant === "hihi" &&
-                size === "transition" &&
-                s.key === "transform";
-              return (
-                <div
-                  className={`seg${i <= openUpto ? " open" : ""}${i === openUpto ? " cap" : ""}${next ? " next" : ""}`}
-                  key={s.key}
-                >
-                  <span className="captag">여기까지 시도 가능</span>
-                  {next && (
-                    <span className="nexttag">
-                      두 힘이 모두 {CONFIG.SIZE_HI} 이상이면 시도 가능
-                    </span>
-                  )}
-                  <b>{s.name}</b>
-                  <small className="def">{s.def}.</small>
-                  <small>{s.impact}.</small>
-                  <small className="ex">예. {s.ex}</small>
-                </div>
-              );
-            })}
-          </div>
-          <div className="cont" aria-hidden="true">
-            <span>부분적</span>
-            <div className="cline" />
-            <span>전면적</span>
-          </div>
-          <p className="contnote">
-            <span className="dir-h">오른쪽으로</span>
-            <span className="dir-v">아래로</span> 갈수록 구성원에게 미치는
-            영향이 커지고 변화를 원하는 힘과 해낼 힘이 더 많이 필요합니다. 큰
-            유형은 작은 유형에 필요한 활동을 전부 포함합니다.
-          </p>
-          <p className="sizecap">
-            {size === "transform"
-              ? "재설계형까지 검토해 볼 수 있는 상태입니다. 일하는 방식 자체를 다시 설계하는 과제도 시도해 볼 만합니다."
-              : size === "transition"
-                ? "개편형까지 검토해 볼 수 있습니다. 재설계형은 변화를 원하는 힘과 해낼 힘이 더 단단해진 뒤에 고려하시기를 권합니다."
-                : `지금은 개선형부터 시작하시기를 권합니다. ${weak} 쪽이 보강되면 개편형도 검토할 수 있습니다. 범위가 좁다는 것은 하지 말라는 뜻이 아니라 이 유형에서 먼저 성공을 만들자는 뜻입니다.`}
-          </p>
-        </div>
-
-        <div className="rblock">
-          <h3>
-            <span className="bn">5</span>낮은 영역에 대한 제언
-          </h3>
-          <p className="bs">
-            점수가 {CONFIG.RX_CUT} 이하인 영역을 낮은 것부터 최대 세 개까지 보여
-            줍니다.
-            {flagged.length > 0 &&
-              flagged.length < CONFIG.RX_MAX &&
-              ` 이번 응답에서는 ${flagged.length}개 영역이 해당합니다.`}
-          </p>
-          <div className="rxlist">
-            {flagged.length > 0 ? (
-              flagged.map((r) => (
-                <div className="rx" key={r.key}>
-                  <div className="rn">
-                    {r.name}
-                    <span className="sc">{f1(r.score)} /4</span>
-                  </div>
-                  <div className="rt2">{r.rx}</div>
-                </div>
-              ))
-            ) : (
-              <div className="rxnone">
-                {CONFIG.RX_CUT} 이하인 영역이 없습니다. 접근 전략의 추천
-                활동으로 바로 넘어가세요.
+        {upto >= 4 && (
+          <>
+            <div className="rblock">
+              <h3>
+                <span className="bn">4</span>지금 가능한 변화 유형
+              </h3>
+              <p className="bs">
+                변화를 원하는 힘과 해낼 힘의 수준을 바탕으로 지금 시도해 볼 만한
+                변화 유형을 보여 줍니다. 색이 칠해진 유형부터 검토해 보세요.
+              </p>
+              <div className="size3">
+                {SIZES.map((s, i) => {
+                  // 큰 변화 상태인데 두 힘이 3.25에 못 미쳐 개편형까지만 열린 경우, 재설계형은 "다음 단계"로 표시한다
+                  const next =
+                    quadrant === "hihi" &&
+                    size === "transition" &&
+                    s.key === "transform";
+                  return (
+                    <div
+                      className={`seg${i <= openUpto ? " open" : ""}${i === openUpto ? " cap" : ""}${next ? " next" : ""}`}
+                      key={s.key}
+                    >
+                      <span className="captag">여기까지 시도 가능</span>
+                      {next && (
+                        <span className="nexttag">
+                          두 힘이 모두 {CONFIG.SIZE_HI} 이상이면 시도 가능
+                        </span>
+                      )}
+                      <b>{s.name}</b>
+                      <small className="def">{s.def}.</small>
+                      <small>{s.impact}.</small>
+                      <small className="ex">예. {s.ex}</small>
+                    </div>
+                  );
+                })}
               </div>
-            )}
-          </div>
-        </div>
+              <div className="cont" aria-hidden="true">
+                <span>부분적</span>
+                <div className="cline" />
+                <span>전면적</span>
+              </div>
+              <p className="contnote">
+                <span className="dir-h">오른쪽으로</span>
+                <span className="dir-v">아래로</span> 갈수록 구성원에게 미치는
+                영향이 커지고 변화를 원하는 힘과 해낼 힘이 더 많이 필요합니다.
+                큰 유형은 작은 유형에 필요한 활동을 전부 포함합니다.
+              </p>
+              <p className="sizecap">
+                {size === "transform"
+                  ? "재설계형까지 검토해 볼 수 있는 상태입니다. 일하는 방식 자체를 다시 설계하는 과제도 시도해 볼 만합니다."
+                  : size === "transition"
+                    ? "개편형까지 검토해 볼 수 있습니다. 재설계형은 변화를 원하는 힘과 해낼 힘이 더 단단해진 뒤에 고려하시기를 권합니다."
+                    : `지금은 개선형부터 시작하시기를 권합니다. ${weak} 쪽이 보강되면 개편형도 검토할 수 있습니다. 범위가 좁다는 것은 하지 말라는 뜻이 아니라 이 유형에서 먼저 성공을 만들자는 뜻입니다.`}
+              </p>
+            </div>
 
-        <div className="rblock">
-          <h3>
-            <span className="bn">6</span>이 결과를 쓰는 법
-          </h3>
-          <div className="honest">
-            <b>이 결과지는 변화를 설계하는 출발점입니다.</b>
-            응답한 한 사람이 본 조직의 모습을 구조화한 것이라 조직의 실제와 다를
-            수 있습니다. 위 여섯 영역 가운데 가장 자신 없는 영역 하나를 골라
-            짧은 설문이나 리더 면담으로 확인하는 것까지가 이 진단의 완성입니다.
-            결과지는 변화과제 기획서의 배경 자료로 쓰세요. 과제를 마친 뒤 같은
-            문항으로 다시 진단하면 변화를 원하는 힘과 해낼 힘이 어떻게
-            달라졌는지도 보입니다.
-          </div>
-        </div>
+            <div className="rblock">
+              <h3>
+                <span className="bn">5</span>낮은 영역에 대한 제언
+              </h3>
+              <p className="bs">
+                점수가 {CONFIG.RX_CUT} 이하인 영역을 낮은 것부터 최대 세 개까지
+                보여 줍니다.
+                {flagged.length > 0 &&
+                  flagged.length < CONFIG.RX_MAX &&
+                  ` 이번 응답에서는 ${flagged.length}개 영역이 해당합니다.`}
+              </p>
+              <div className="rxlist">
+                {flagged.length > 0 ? (
+                  flagged.map((r) => (
+                    <div className="rx" key={r.key}>
+                      <div className="rn">
+                        {r.name}
+                        <span className="sc">{f1(r.score)} /4</span>
+                      </div>
+                      <div className="rt2">{r.rx}</div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="rxnone">
+                    {CONFIG.RX_CUT} 이하인 영역이 없습니다. 접근 전략의 추천
+                    활동으로 바로 넘어가세요.
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="rblock">
+              <h3>
+                <span className="bn">6</span>이 결과를 쓰는 법
+              </h3>
+              <div className="honest">
+                <b>이 결과지는 변화를 설계하는 출발점입니다.</b>
+                응답한 한 사람이 본 조직의 모습을 구조화한 것이라 조직의 실제와
+                다를 수 있습니다. 위 여섯 영역 가운데 가장 자신 없는 영역 하나를
+                골라 짧은 설문이나 리더 면담으로 확인하는 것까지가 이 진단의
+                완성입니다. 결과지는 변화과제 기획서의 배경 자료로 쓰세요.
+                과제를 마친 뒤 같은 문항으로 다시 진단하면 변화를 원하는 힘과
+                해낼 힘이 어떻게 달라졌는지도 보입니다.
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </>
   );
