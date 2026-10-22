@@ -141,6 +141,8 @@ h2 .part { display: inline-block; font-size: 12px; font-weight: 700; letter-spac
 .rblock:first-child { border-top: none; margin-top: 0; }
 .rblock h3 { margin: 0 0 4px; font-size: 16.5px; }
 .rblock h3 .bn { color: var(--accent-text); font-weight: 700; margin-right: 7px; }
+/* 교차 보기의 가, 나, 다, 라는 팀장 색 */
+.rbody.cross .rblock h3 .bn { color: var(--leader); }
 .rblock .bs { color: var(--sub); font-size: 13px; margin: 0 0 14px; }
 
 /* 모델 다이어그램 */

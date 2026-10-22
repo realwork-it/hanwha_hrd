@@ -61,7 +61,7 @@ export default function CrossView({
           놓았습니다.
         </div>
       </div>
-      <div className="rbody">
+      <div className="rbody cross">
         <div className="rblock">
           {staffOptions.length > 1 && (
             <p className="staffpick">
