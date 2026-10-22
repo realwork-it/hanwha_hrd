@@ -295,6 +295,7 @@ h2 .part { display: inline-block; font-size: 12px; font-weight: 700; letter-spac
 .tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
 .tabs a { text-decoration: none; color: var(--sub); font-weight: 700; font-size: 14px; padding: 10px 14px; border-bottom: 3px solid transparent; margin-bottom: -1px; }
 .tabs a.on { color: var(--accent-text); border-bottom-color: var(--accent-text); }
+.tabs a.leader.on { color: var(--leader); border-bottom-color: var(--leader); }
 
 /* 분포 */
 .overview { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; }

@@ -111,7 +111,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
       </Link>
       <Link
         href="/admin?tab=status-leader"
-        className={activeTab === "status-leader" ? "on" : ""}
+        className={activeTab === "status-leader" ? "on leader" : "leader"}
         aria-current={activeTab === "status-leader" ? "page" : undefined}
       >
         제출 현황 (팀장)
@@ -132,7 +132,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
       </Link>
       <Link
         href="/admin?tab=ax-leader"
-        className={activeTab === "ax-leader" ? "on" : ""}
+        className={activeTab === "ax-leader" ? "on leader" : "leader"}
         aria-current={activeTab === "ax-leader" ? "page" : undefined}
       >
         조직 AX 현황 분석 (팀장)
