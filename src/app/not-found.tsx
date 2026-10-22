@@ -6,7 +6,7 @@ export default function NotFound() {
     <>
       <div className="band compact">
         <div className="inner">
-          <p className="eyebrow">REALWORK | 조직변화 준비도 체크</p>
+          <p className="eyebrow">REALWORK x Hanwha | 조직변화 준비도 체크</p>
           <h1>페이지를 찾을 수 없습니다</h1>
         </div>
       </div>

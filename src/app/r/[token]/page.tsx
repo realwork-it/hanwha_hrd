@@ -60,7 +60,7 @@ export default async function ResultPage({
         <div className="band compact">
           <div className="inner">
             <p className="eyebrow">
-              REALWORK | 조직변화 준비도 체크 |{" "}
+              REALWORK x Hanwha | 조직변화 준비도 체크 |{" "}
               {row.role === "leader" ? "팀장용 결과지" : "담당자용 결과지"}
             </p>
             <h1>조직변화 준비도 체크 결과지</h1>

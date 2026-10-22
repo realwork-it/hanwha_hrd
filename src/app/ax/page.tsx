@@ -13,7 +13,7 @@ export default function AxPage() {
     <>
       <div className="band">
         <div className="inner">
-          <p className="eyebrow">REALWORK | AX 퀵 서베이 | 조직문화 담당자용</p>
+          <p className="eyebrow">REALWORK x Hanwha | AX 퀵 서베이 | 조직문화 담당자용</p>
           <h1>AX 시대 조직문화, 우리 회사는 어디에 있나</h1>
           <p className="lede">
             아홉 문항에 답하면 참가 조직 전체의 답이 화면에 모입니다. <b>어느 질문에서 가장 많은 조직이 막혀 있는지</b>를 보고
