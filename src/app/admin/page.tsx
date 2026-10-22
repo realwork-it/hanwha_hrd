@@ -264,7 +264,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
 
 function Shell({
   children,
-  eyebrow = "REALWORK | 조직변화 준비도 체크 및 조직 AX 현황 | 응답 대시보드",
+  eyebrow = "REALWORK x Hanwha | 조직변화 준비도 체크 및 조직 AX 현황 | 응답 대시보드",
   title = "응답 대시보드",
 }: {
   children: React.ReactNode;
