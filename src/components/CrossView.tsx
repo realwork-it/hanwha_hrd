@@ -84,10 +84,11 @@ export default function CrossView({
             <span className="bn">가</span>여섯 영역 프로파일 비교
           </h3>
           <p className="bs">비교 대상 담당자 응답: {staffLabel}</p>
-          <p className="bs">
-            영역마다 위 막대가 팀장, 아래 막대가 담당자입니다. 점선은 기준선
-            2.75입니다.
-          </p>
+          <p className="bs">점선은 기준선 2.75입니다.</p>
+          <div className="legend">
+            <span className="lg-leader">팀장 (나)</span>
+            <span className="lg-staff">담당자</span>
+          </div>
           <div className="bars">
             {leader.axes.map((ax, i) => (
               <div className="brow2" key={ax.id}>
@@ -105,7 +106,7 @@ export default function CrossView({
                     style={{ left: `${(CUT / 4) * 100}%` }}
                   />
                 </div>
-                <div className="bval leader">{f1(ax.score)}</div>
+                <div className="bval leader">팀장 {f1(ax.score)}</div>
                 <div className="track">
                   <div
                     className="fill"
@@ -116,7 +117,9 @@ export default function CrossView({
                     style={{ left: `${(CUT / 4) * 100}%` }}
                   />
                 </div>
-                <div className="bval staff">{f1(staff.axes[i].score)}</div>
+                <div className="bval staff">
+                  담당자 {f1(staff.axes[i].score)}
+                </div>
               </div>
             ))}
           </div>

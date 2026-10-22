@@ -248,11 +248,11 @@ h2 .part { display: inline-block; font-size: 12px; font-weight: 700; letter-spac
 .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
 .legend .lg-leader::before { background: var(--leader); }
 .legend .lg-staff::before { background: var(--accent); }
-.brow2 { display: grid; grid-template-columns: 150px 1fr 44px; gap: 10px 10px; align-items: center; }
+.brow2 { display: grid; grid-template-columns: 150px 1fr 76px; gap: 10px 10px; align-items: center; }
 .brow2 .bl { grid-row: span 2; font-size: 13px; font-weight: 500; }
 .brow2 .bl small { display: block; font-size: 10.5px; color: var(--sub); font-weight: 400; }
 .brow2 .track { height: 11px; }
-.brow2 .bval { font-size: 12.5px; }
+.brow2 .bval { font-size: 12.5px; white-space: nowrap; }
 .brow2 .bval.leader { color: var(--leader); }
 .brow2 .bval.staff { color: var(--accent-text); }
 .gapcard { border: 1px solid var(--line); border-left: 4px solid var(--leader); border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; }
@@ -417,7 +417,8 @@ h2 .part { display: inline-block; font-size: 12px; font-weight: 700; letter-spac
 footer { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 14px; font-size: 12px; color: var(--sub); }
 
 @media (max-width: 640px) {
-  .brow, .brow2 { grid-template-columns: 104px 1fr 40px; }
+  .brow { grid-template-columns: 104px 1fr 40px; }
+  .brow2 { grid-template-columns: 104px 1fr 68px; }
   .ovside { flex-basis: auto; width: 100%; }
   .overview.board { padding: 16px; }
   .overview.board .ovbody { flex-wrap: wrap; height: auto; }
