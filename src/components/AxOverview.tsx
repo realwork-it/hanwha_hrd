@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { AX_ITEMS } from "@/lib/ax";
-import { AX_THEMES, AX_THEMES_META } from "@/lib/ax-themes";
+import { AX_THEMES, AX_THEMES_META, AX_THEMES_LEADER, AX_THEMES_LEADER_META } from "@/lib/ax-themes";
 import type { AxCounts } from "@/app/admin/ax-data/route";
 
 const REFRESH_MS = 30_000;
@@ -74,7 +74,9 @@ export default function AxOverview({ role }: { role: AxRole }) {
     : "";
   const shown = focus ? AX_ITEMS.filter((i) => i.id === focus) : AX_ITEMS;
   const focusIdx = focus ? AX_ITEMS.findIndex((i) => i.id === focus) : -1;
-  const showThemes = role === "staff";
+  const themes = role === "leader" ? AX_THEMES_LEADER : AX_THEMES;
+  const themesMeta = role === "leader" ? AX_THEMES_LEADER_META : AX_THEMES_META;
+  const showThemes = themes.length > 0;
 
   return (
     <div className={`overview axov${board ? " board" : ""}`}>
@@ -131,16 +133,16 @@ export default function AxOverview({ role }: { role: AxRole }) {
                   </span>
                 )}
                 {it.kind === "text" && (
-                  <span className="axmulti"> 주관식. {showThemes ? `${AX_THEMES_META.basedOn} 기준으로 묶음` : "순서를 섞어 보여 줍니다"}</span>
+                  <span className="axmulti"> 주관식. {showThemes ? `${themesMeta.basedOn} 기준으로 묶음` : "순서를 섞어 보여 줍니다"}</span>
                 )}
               </div>
               {it.kind === "text" ? (
                 <div className="axthemes">
-                  {!showThemes && <div className="axthnote">팀장 주관식은 세션 뒤에 주제로 묶어 정리합니다. 원문은 아래에서 펼쳐 봅니다.</div>}
-                  {showThemes && it.id === AX_THEMES_META.itemId && (
+                  {!showThemes && <div className="axthnote">주관식은 세션 뒤에 주제로 묶어 정리합니다. 원문은 아래에서 펼쳐 봅니다.</div>}
+                  {showThemes && it.id === themesMeta.itemId && (
                     <>
-                      <div className="axthnote">{AX_THEMES_META.note}</div>
-                      {AX_THEMES.map((th) => (
+                      <div className="axthnote">{themesMeta.note}</div>
+                      {themes.map((th) => (
                         <div className="axtheme" key={th.title}>
                           <div className="axthh">
                             <span className="axtht">{th.title}</span>
