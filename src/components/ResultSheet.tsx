@@ -97,12 +97,14 @@ export default function ResultSheet({ scored, upto = 6 }: Props) {
                   가리킵니다
                 </div>
               </div>
-              <div className="mout">
-                <div className="on">가능한 변화 유형</div>
-                <div className="od">
-                  개선형, 개편형, 재설계형 중 지금 감당할 수 있는 범위
+              {upto >= 4 && (
+                <div className="mout">
+                  <div className="on">가능한 변화 유형</div>
+                  <div className="od">
+                    개선형, 개편형, 재설계형 중 지금 감당할 수 있는 범위
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
