@@ -144,7 +144,9 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
     return (
       <Shell eyebrow="REALWORK | 조직 AX 현황 | 진행자용" title="조직 AX 현황">
         {tabs}
-        <AxOverview role={activeTab === "ax" ? "staff" : "leader"} />
+        <div className={activeTab === "ax-leader" ? "theme-leader" : undefined}>
+          <AxOverview role={activeTab === "ax" ? "staff" : "leader"} />
+        </div>
         <form action={logout} style={{ marginTop: 16 }}>
           <button type="submit" className="btn small ghost">
             로그아웃
@@ -172,71 +174,73 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
     <Shell title={`제출 현황 (${statusLabel})`}>
       {tabs}
       <AutoRefresh seconds={30} />
-      <div className="kpis">
-        <div className="kpi">
-          <div className="kl">{statusLabel} 제출</div>
-          <div className="kv">{statusRows.length}</div>
-        </div>
-        <div className="kpi">
-          <div className="kl">제출한 계열사</div>
-          <div className="kv">
-            {submittedCompanies}
-            <small
-              style={{ fontSize: 13, color: "var(--sub)", fontWeight: 400 }}
-            >
-              {" "}
-              / {companies.length}
-            </small>
+      <div className={statusRole === "leaders" ? "theme-leader" : undefined}>
+        <div className="kpis">
+          <div className="kpi">
+            <div className="kl">{statusLabel} 제출</div>
+            <div className="kv">{statusRows.length}</div>
+          </div>
+          <div className="kpi">
+            <div className="kl">제출한 계열사</div>
+            <div className="kv">
+              {submittedCompanies}
+              <small
+                style={{ fontSize: 13, color: "var(--sub)", fontWeight: 400 }}
+              >
+                {" "}
+                / {companies.length}
+              </small>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="admin">
-        <table>
-          <thead>
-            <tr>
-              <th>계열사</th>
-              <th>{statusLabel} 제출</th>
-            </tr>
-          </thead>
-          <tbody>
-            {companies.map((c) => {
-              const g = byCompany.get(c)!;
-              return (
-                <tr key={c}>
-                  <td>
-                    {c}
-                    {!COMPANIES.includes(c) && (
-                      <span className="hint"> (직접 입력)</span>
-                    )}
-                  </td>
-                  <td>
-                    {g[statusRole].length === 0 ? (
-                      <span className="no">미제출</span>
-                    ) : (
-                      g[statusRole].map((r) => (
-                        <div key={r.id}>
-                          <span className="ok">{r.name || "제출"}</span>{" "}
-                          <span className="tm">
-                            {fmt.format(new Date(r.created_at))}
-                          </span>{" "}
-                          <a
-                            className="rlink"
-                            href={`/r/${r.token}`}
-                            target="_blank"
-                            rel="noopener"
-                          >
-                            결과지
-                          </a>
-                        </div>
-                      ))
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <div className="admin">
+          <table>
+            <thead>
+              <tr>
+                <th>계열사</th>
+                <th>{statusLabel} 제출</th>
+              </tr>
+            </thead>
+            <tbody>
+              {companies.map((c) => {
+                const g = byCompany.get(c)!;
+                return (
+                  <tr key={c}>
+                    <td>
+                      {c}
+                      {!COMPANIES.includes(c) && (
+                        <span className="hint"> (직접 입력)</span>
+                      )}
+                    </td>
+                    <td>
+                      {g[statusRole].length === 0 ? (
+                        <span className="no">미제출</span>
+                      ) : (
+                        g[statusRole].map((r) => (
+                          <div key={r.id}>
+                            <span className="ok">{r.name || "제출"}</span>{" "}
+                            <span className="tm">
+                              {fmt.format(new Date(r.created_at))}
+                            </span>{" "}
+                            <a
+                              className="rlink"
+                              href={`/r/${r.token}`}
+                              target="_blank"
+                              rel="noopener"
+                            >
+                              결과지
+                            </a>
+                          </div>
+                        ))
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <p className="meta">

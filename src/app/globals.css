@@ -40,6 +40,12 @@ body {
   overflow-wrap: break-word;
 }
 button, input, select { font: inherit; color: inherit; }
+/* 팀장 화면. 강조색 토큰만 청록으로 바꾸면 그 안의 막대, 점, 상자, 버튼이 모두 팀장 색이 된다 */
+.theme-leader { --accent: #1f7a8c; --accent-text: #176a7a; --accent2: #6fb6c4; --pale: #e3f1f4; --paleline: #b9dce4; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-leader { --accent: #5fb3c4; --accent-text: #7fc6d4; --accent2: #3e7f8c; --pale: #15333a; --paleline: #24505a; }
+}
+:root[data-theme="dark"] .theme-leader { --accent: #5fb3c4; --accent-text: #7fc6d4; --accent2: #3e7f8c; --pale: #15333a; --paleline: #24505a; }
 a { color: var(--accent-text); }
 
 .wrap {
