@@ -74,10 +74,9 @@ export default async function ResultPage({
       </div>
 
       <div className="wrap">
-        <CopyLink />
-
-        {/* 팀장은 자기 결과를 3번까지만 보고 바로 교차 보기로 넘어간다. 팀장 색은 자기 결과까지만 */}
+        {/* 팀장은 자기 결과를 3번까지만 보고 바로 교차 보기로 넘어간다. 팀장 색은 링크 상자와 자기 결과까지 */}
         <div className={row.role === "leader" ? "theme-leader" : undefined}>
+          <CopyLink />
           <ResultSheet scored={mine} upto={row.role === "leader" ? 3 : 6} />
         </div>
 
