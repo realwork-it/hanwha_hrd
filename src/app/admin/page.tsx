@@ -219,7 +219,15 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                           <span className="ok">{r.name || "제출"}</span>{" "}
                           <span className="tm">
                             {fmt.format(new Date(r.created_at))}
-                          </span>
+                          </span>{" "}
+                          <a
+                            className="rlink"
+                            href={`/r/${r.token}`}
+                            target="_blank"
+                            rel="noopener"
+                          >
+                            결과지
+                          </a>
                         </div>
                       ))
                     )}
@@ -232,8 +240,8 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
       </div>
 
       <p className="meta">
-        점수는 표시하지 않습니다. 이 화면은 제출 여부와 제출 시각만 보여 주며
-        30초마다 자동 갱신됩니다.
+        이 화면은 제출 여부와 제출 시각만 보여 주며 30초마다 자동 갱신됩니다.
+        결과지는 새 창으로 열립니다.
       </p>
       <form action={logout} style={{ marginTop: 16 }}>
         <button type="submit" className="btn small ghost">

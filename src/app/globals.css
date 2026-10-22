@@ -279,6 +279,7 @@ h2 .part { display: inline-block; font-size: 12px; font-weight: 700; letter-spac
 .admin .ok { color: var(--accent-text); font-weight: 700; }
 .admin .no { color: var(--sub); }
 .admin .tm { font-size: 12px; color: var(--sub); font-variant-numeric: tabular-nums; }
+.admin .rlink { font-size: 12px; font-weight: 700; color: var(--accent-text); margin-left: 4px; white-space: nowrap; }
 .kpis { display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0; }
 .kpi { flex: 1 1 140px; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; background: var(--surface); }
 .kpi .kl { font-size: 11.5px; color: var(--sub); font-weight: 700; }
