@@ -105,11 +105,6 @@ export default function ResultSheet({ scored, upto = 6 }: Props) {
               </div>
             </div>
           </div>
-          <div className="principle">
-            준비도는 변화를 하느냐 마느냐를 정하지 않습니다.
-            <br />
-            어떤 유형으로, 어떤 순서로 하느냐를 정합니다.
-          </div>
         </div>
 
         <div className="rblock">
